@@ -4,52 +4,55 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Hamado Dene
  */
 public class Monitor {
+
+    static final Logger LOG = Logger.getLogger(Monitor.class.getName());
     private final Lock lock;
-    Map<String,Integer> words;
+    Map<String, Integer> words;
     private final int DEFAULT_WORD_COUNT = 1;
     private int numberWordProcessed = 0;
-    
-    public Monitor(){
+
+    public Monitor() {
         lock = new ReentrantLock();
         words = new HashMap<>();
     }
-    
+
     //Update word occurences
-    public void updateOccurences(String word){
+    public void updateOccurences(String word) {
         lock.lock();
-        try {       
+        try {
             //Update occurences counter
-            if(words.containsKey(word)){
+            if (words.containsKey(word)) {
                 int value = words.get(word);
                 words.put(word, value++);
             } else {
                 words.put(word, DEFAULT_WORD_COUNT);
             }
-            
+
         } finally {
             lock.unlock();
         }
     }
-    
+
     //Update number of word processed
-    public void updataNumberWordProcessed(){
+    public void updataNumberWordProcessed() {
         lock.lock();
         try {
-            numberWordProcessed ++;
+            numberWordProcessed++;
         } finally {
             lock.unlock();
-        }       
+        }
     }
-    
+
     //get number of word processed
-    public int getNumberWordProcessed(){
+    public int getNumberWordProcessed() {
         return this.numberWordProcessed;
     }
-    
+
 }
