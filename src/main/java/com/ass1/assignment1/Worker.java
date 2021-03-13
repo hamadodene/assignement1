@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ass1.assignment1;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
@@ -14,19 +10,17 @@ import org.apache.pdfbox.text.PDFTextStripper;
  *
  * @author Hamado Dene
  */
-public class Worker extends Thread {
+public class Worker extends Thread {    
+    private static ArrayList<String> allFiles = new ArrayList<String>();
     private PDDocument document;
     private final Monitor monitor;
-    private final String directory;
     
-    public Worker(Monitor monitor , String directory) {
+    public Worker(Monitor monitor) {
        this.monitor = monitor;
-       this.directory = directory;
     }
     
     public void run(){
-        
-        
+        //Start work
     }
     
     void parsePdf(File file) {
@@ -37,11 +31,12 @@ public class Worker extends Thread {
             String words[] = pdfFIleInText.split("\\r?\\n");
             
             for (String word : words) {
-                monitor.update(word);
+                monitor.updateOccurences(word);
             }
         } catch (IOException e) {
             System.out.println("Something went wrong " + e);
         }
     }
+    
     
 }
