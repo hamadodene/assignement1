@@ -84,7 +84,7 @@ public final class FilesProcessor {
             String line = br.readLine();
             while (line != null) {
                 if(line.matches(".*([ \\t]).*")){
-                    throw new IncorrectFileException("File format not correct, please check");
+                    throw new IncorrectFileException("File " + file.getName() + "format not correct, please check");
                 } else {
                     wordsToExclude.add(line);
                     line = br.readLine();
