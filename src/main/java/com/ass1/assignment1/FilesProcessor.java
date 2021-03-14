@@ -1,5 +1,7 @@
 package com.ass1.assignment1;
 
+import com.ass1.assignment1.exception.IncorrectDirectoryException;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +10,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author Hamado Dene
  */
 public final class FilesProcessor {
@@ -19,45 +20,43 @@ public final class FilesProcessor {
     private int numberOfFile = 0;
     private static int nextFile = -1;
     private static int THREADS;
-    
+
     public FilesProcessor(String directory) {
         this.directory = directory;
     }
 
-    public void init(){
-        if(Runtime.getRuntime().availableProcessors() < 3) {
+    public void init() throws IncorrectDirectoryException {
+        if (Runtime.getRuntime().availableProcessors() < 3) {
             THREADS = 3;
         } else {
             THREADS = Runtime.getRuntime().availableProcessors();
         }
         initializePdfFiles(new File(directory));
 
-        if(THREADS > pdfFilesAbsolutePath.size()) {
+        if (THREADS > pdfFilesAbsolutePath.size()) {
             THREADS = pdfFilesAbsolutePath.size();
         }
     }
 
-    private void initializePdfFiles(final File folder) {
+    private void initializePdfFiles(final File folder) throws IncorrectDirectoryException {
         String tempFileName = "";
-        if (folder.isDirectory()) {
-            for (final File entry : folder.listFiles()) {
-                if (entry.isFile()) {
-                    String extension = getExtensionByStringHandling(entry.getName());
-                    if (!"pdf".equals(extension)) {
-                        LOG.log(Level.INFO, "Skipping file {0} because not a pdf files", entry.getName());
-                    } else {
-                        tempFileName = entry.getAbsolutePath();
-                        pdfFilesAbsolutePath.add(tempFileName);
-                    }
+        if (!folder.exists() || !folder.isDirectory()) {
+            throw new IncorrectDirectoryException("Wrong folder pass, please correct");
+        }
+        for (final File entry : folder.listFiles()) {
+            if (entry.isFile()) {
+                String extension = getExtensionByStringHandling(entry.getName());
+                if (!"pdf".equals(extension)) {
+                    LOG.log(Level.INFO, "Skipping file {0} because not a pdf files", entry.getName());
                 } else {
-                    LOG.log(Level.INFO, "Skipping directory {0}", entry.getAbsolutePath());
+                    tempFileName = entry.getAbsolutePath();
+                    pdfFilesAbsolutePath.add(tempFileName);
                 }
+            } else {
+                LOG.log(Level.INFO, "Skipping directory {0}", entry.getAbsolutePath());
             }
         }
-        if (folder.isFile()) {
-            tempFileName = folder.getAbsolutePath();
-            pdfFilesAbsolutePath.add(tempFileName);
-        }
+
         numberOfFile = pdfFilesAbsolutePath.size();
     }
 
@@ -87,7 +86,7 @@ public final class FilesProcessor {
         }
         return false;
     }
-    
+
     public int getWorkers() {
         return THREADS;
     }

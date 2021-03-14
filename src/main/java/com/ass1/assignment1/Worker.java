@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.ass1.assignment1.exception.ForcedStopException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
@@ -18,7 +20,8 @@ public class Worker extends Thread {
     static final Logger LOG = Logger.getLogger(Worker.class.getName());
     private int numberOfRecordProcessed = 0;
 
-    public Worker(Monitor monitor) {
+    public Worker(final String name, Monitor monitor) {
+        super(name);
         this.monitor = monitor;
     }
 
@@ -30,7 +33,6 @@ public class Worker extends Thread {
                 File file = getFile();
                 if (file != null) {
                     LOG.log(Level.INFO, "{0} Parsing pdf {1}", new Object[]{this.getName(), file.getName()});
-
                     //Parse pdf
                     parsePdf(file);
                     long _stop = System.currentTimeMillis();
@@ -54,10 +56,10 @@ public class Worker extends Thread {
             String words[] = pdfFIleInText.split("\\r?\\n");
 
             for (String word : words) {
-                numberOfRecordProcessed = monitor.updateOccurence(word);
+                 numberOfRecordProcessed = monitor.updateOccurence(word);
             }
             document.close();
-        } catch (IOException e) {
+        } catch (IOException | ForcedStopException e) {
             LOG.log(Level.SEVERE, "Something went wrong {0}", e.toString());
         }
     }

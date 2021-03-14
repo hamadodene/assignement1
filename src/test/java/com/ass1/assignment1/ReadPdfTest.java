@@ -68,6 +68,7 @@ public class ReadPdfTest {
                 cont.showText(line5);
                 cont.endText();
             }
+            //doc.save("src/main/resources/prova.pdf");
             for (int i = 0; i < 50; i++) {
                 doc.save("src/main/resources/prova" + i + ".pdf");
             }

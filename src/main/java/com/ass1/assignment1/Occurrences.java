@@ -20,14 +20,15 @@ public class Occurrences {
         words = new HashMap<>();
     }
     
-    public int addOccurrence(String word) {
+    public int  addOccurrence(String word) {
         if(words.containsKey(word)){
             int value = words.get(word);
-            words.put(word, value++);
+            words.put(word, value + 1);
         } else {
             words.put(word, DEFAULT_WORD_COUNT);
+            numberOfWordProcessed++;
         }
-        return numberOfWordProcessed++;
+        return numberOfWordProcessed;
     }
     
     public int getNumberWordsProcessed() {
@@ -51,5 +52,12 @@ public class Occurrences {
                 .stream()
                 .sorted((Map.Entry.<String, Integer>comparingByValue().reversed()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+    }
+
+    public void allWords() {
+        for(String key : words.keySet()) {
+            int value = words.get(key);
+            System.out.println(key + " " + value );
+        }
     }
 }
