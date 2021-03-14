@@ -46,11 +46,11 @@ public class Worker extends Thread {
                     }
                 }
             } catch (InterruptedException ex) {
-                LOG.log(Level.SEVERE, "{1} - Say: something went wrong {0}", new Object[]{this.getName(), ex});
+                LOG.log(Level.SEVERE, "{1} - Says: something went wrong {0}", new Object[]{this.getName(), ex});
             }
         }
         if(verbose) {
-            LOG.log(Level.FINE, "{0} - Say: Nothing to do now, i go sleep", this.getName());
+            LOG.log(Level.FINE, "{0} - Says: Nothing to do now, i go sleep", this.getName());
         }
     }
 
@@ -66,7 +66,7 @@ public class Worker extends Thread {
             }
             document.close();
         } catch (IOException | ForcedStopException ex) {
-            LOG.log(Level.SEVERE, "{1} - Say: something went wrong {0}", new Object[]{this.getName(), ex});
+            LOG.log(Level.SEVERE, "{1} - Says: something went wrong {0}", new Object[]{this.getName(), ex});
         }
     }
 
