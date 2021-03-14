@@ -5,22 +5,28 @@ package com.ass1.assignment1;
  * @author Hamado Dene
  */
 public class Main {
-
+    
     public static void main(String[] args) {
-
+        int THREADS = 0;
         System.out.println("Starting programm");
-        Monitor monitor = new Monitor();
-
         String path = "src/main/resources";
         FilesProcessor process = new FilesProcessor(path);
-
-        Worker worker = new Worker(monitor, process);
-        Worker worker2 = new Worker(monitor, process);
-        Worker worker3 = new Worker(monitor, process);
-        Worker worker4 = new Worker(monitor, process);
-        worker.start();
-        worker2.start();
-        worker3.start();
-        worker4.start();
-    }
+        if(Runtime.getRuntime().availableProcessors() < 3){
+            THREADS = 3;
+        } else {
+            THREADS = Runtime.getRuntime().availableProcessors();
+        }       
+        if(THREADS > process.getNumberOfFile()) {
+            THREADS = process.getNumberOfFile();
+        }
+        System.out.println("Use " + THREADS  + " threads");
+        Occurences occurences = new Occurences();
+        Monitor monitor = new Monitor(occurences,process);
+        Worker[] workers = new Worker[THREADS];
+        for(int i  = 0 ; i < THREADS ; i++) {
+            workers[i] = new Worker(monitor);
+            workers[i].start();
+        }
+        
+    }   
 }

@@ -2,6 +2,7 @@ package com.ass1.assignment1;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,17 +14,31 @@ import java.util.logging.Logger;
 public final class FilesProcessor {
 
     static final Logger LOG = Logger.getLogger(FilesProcessor.class.getName());
-    private static final ArrayList<String> allFiles = new ArrayList<String>();
+    private static final ArrayList<String> pdfFilesAbsolutePath = new ArrayList<String>();
     private final String directory;
     private int numberOfFile = 0;
     private static int nextFile = -1;
-
+    private static int THREADS;
+    
     public FilesProcessor(String directory) {
         this.directory = directory;
-        getAllFilesInArrayList(new File(directory));
+        initializePdfFiles(new File(directory));
     }
+    /*
+    public void init(){
+        if(Runtime.getRuntime().availableProcessors() < 3) {
+            THREADS = 3;
+        } else {
+            THREADS = Runtime.getRuntime().availableProcessors();
+        }
+        IinitializePdfFiles(new File(directory));
+        
+        if(THREADS > pdfFilesAbsolutePath.size()) {
+            THREADS = pdfFilesAbsolutePath.size();
+        }
+    }*/
 
-    private void getAllFilesInArrayList(final File folder) {
+    private void initializePdfFiles(final File folder) {
         String tempFileName = "";
         if (folder.isDirectory()) {
             for (final File entry : folder.listFiles()) {
@@ -33,7 +48,7 @@ public final class FilesProcessor {
                         LOG.log(Level.INFO, "Skipping file {0} because not a pdf files", entry.getName());
                     } else {
                         tempFileName = entry.getAbsolutePath();
-                        allFiles.add(tempFileName);
+                        pdfFilesAbsolutePath.add(tempFileName);
                     }
                 } else {
                     LOG.log(Level.INFO, "Skiping direcory {0}", entry.getAbsolutePath());
@@ -42,15 +57,15 @@ public final class FilesProcessor {
         }
         if (folder.isFile()) {
             tempFileName = folder.getAbsolutePath();
-            allFiles.add(tempFileName);
+            pdfFilesAbsolutePath.add(tempFileName);
         }
-        numberOfFile = allFiles.size();
+        numberOfFile = pdfFilesAbsolutePath.size();
     }
 
-    public synchronized File getNextFile() {
+    public File getNextFile() {
         nextFile++;
-        if (nextFile < allFiles.size()) {
-            return new File(allFiles.get(nextFile));
+        if (nextFile < pdfFilesAbsolutePath.size()) {
+            return new File(pdfFilesAbsolutePath.get(nextFile));
         } else {
             return null;
         }
@@ -67,14 +82,14 @@ public final class FilesProcessor {
         return this.numberOfFile;
     }
 
-    public ArrayList<String> files() {
-        return allFiles;
-    }
-
     public boolean existNextFile() {
-        if (nextFile < allFiles.size()) {
+        if (nextFile < pdfFilesAbsolutePath.size()) {
             return true;
         }
         return false;
+    }
+    
+    public static int getWorkers() {
+        return THREADS;
     }
 }

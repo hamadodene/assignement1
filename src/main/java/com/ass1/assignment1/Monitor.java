@@ -1,9 +1,6 @@
 package com.ass1.assignment1;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.io.File;
 import java.util.logging.Logger;
 
 /**
@@ -13,46 +10,26 @@ import java.util.logging.Logger;
 public class Monitor {
 
     static final Logger LOG = Logger.getLogger(Monitor.class.getName());
-    private final Lock lock;
-    Map<String, Integer> words;
-    private final int DEFAULT_WORD_COUNT = 1;
-    private int numberWordProcessed = 0;
+    private final Occurences occurences;
+    private final FilesProcessor filesProcessor;
+    public int FORCE_STOP_VALUE = -99;
+    
 
-    public Monitor() {
-        lock = new ReentrantLock();
-        words = new HashMap<>();
+    public Monitor(Occurences occurences, FilesProcessor fileprocessor) {
+        this.occurences = occurences;
+        this.filesProcessor = fileprocessor;
     }
 
     //Update word occurences
-    public void updateOccurences(String word) {
-        lock.lock();
-        try {
-            //Update occurences counter
-            if (words.containsKey(word)) {
-                int value = words.get(word);
-                words.put(word, value++);
-            } else {
-                words.put(word, DEFAULT_WORD_COUNT);
-            }
-
-        } finally {
-            lock.unlock();
-        }
+    public synchronized int updateOccurences(String word) {    
+        return occurences.addOccurences(word);
     }
 
-    //Update number of word processed
-    public void updataNumberWordProcessed() {
-        lock.lock();
-        try {
-            numberWordProcessed++;
-        } finally {
-            lock.unlock();
-        }
+    public synchronized File getNextFile() {
+        return filesProcessor.getNextFile();
     }
-
-    //get number of word processed
-    public int getNumberWordProcessed() {
-        return this.numberWordProcessed;
+    
+    public boolean existNextFile() {
+        return filesProcessor.existNextFile();
     }
-
 }

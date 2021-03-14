@@ -1,0 +1,55 @@
+package com.ass1.assignment1;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
+
+/**
+ *
+ * @author Hamado Dene
+ */
+public class Occurences {
+    
+    private final Map<String, Integer> words;
+    private final int DEFAULT_WORD_COUNT = 1;
+    private int numberOfWordProcessed = 0;
+    
+    public Occurences () {
+        words = new HashMap<>();
+    }
+    
+    public int addOccurences( String word) {
+        if(words.containsKey(word)){
+            int value = words.get(word);
+            words.put(word, value++);
+        } else {
+            words.put(word, DEFAULT_WORD_COUNT);
+        }
+        return numberOfWordProcessed++;
+    }
+    
+    public int getNumberWordsProcessed() {
+        return numberOfWordProcessed;
+    }
+    
+    public Map<String, Integer> getOccurences(int n) {
+        if(words.isEmpty()) {
+            return null;
+        }
+        //Sorted map from value
+        final Map<String, Integer> sortedByCount = sortByValue(words);
+        
+        return sortedByCount.entrySet().stream()
+               .limit(n)
+               .collect(Collectors.toMap(Entry::getKey, Entry::getValue));        
+    }
+    
+    private  static Map<String, Integer> sortByValue(final Map<String, Integer> wordCounts) {
+        return wordCounts.entrySet()
+                .stream()
+                .sorted((Map.Entry.<String, Integer>comparingByValue().reversed()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+    }
+}

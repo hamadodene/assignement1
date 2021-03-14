@@ -15,21 +15,20 @@ public class Worker extends Thread {
 
     private PDDocument document;
     private final Monitor monitor;
-    private final FilesProcessor dispatcher;
     static final Logger LOG = Logger.getLogger(Worker.class.getName());
+    private int numberOfRecordProcessed = 0;
 
-    public Worker(Monitor monitor, FilesProcessor dispatcher) {
+    public Worker(Monitor monitor) {
         this.monitor = monitor;
-        this.dispatcher = dispatcher;
     }
 
     @Override
     public void run() {
-        while (dispatcher.existNextFile()) {
-            long _start = System.currentTimeMillis();
-            File file = getFile();
-            if (file != null) {
-                try {
+        while (monitor.existNextFile()) {
+            try {
+                long _start = System.currentTimeMillis();
+                File file = getFile();
+                if (file != null) {
                     LOG.log(Level.INFO, "{0} Parsing pdf {1}", new Object[]{this.getName(), file.getName()});
 
                     //Parse pdf
@@ -38,10 +37,10 @@ public class Worker extends Thread {
                     long t = _stop - _start;
 
                     LOG.log(Level.INFO, "Processed pdf {0} in {1} ms", new Object[]{file.getName(), t});
-                    LOG.log(Level.INFO, "Processed actualy {0} pdf", monitor.getNumberWordProcessed());
-                } catch (InterruptedException ex) {
-                    LOG.log(Level.SEVERE, ex.toString());
+                    LOG.log(Level.INFO, "Processed actualy {0} words", numberOfRecordProcessed);
                 }
+            } catch (InterruptedException ex) {
+                LOG.log(Level.SEVERE, "Something went wrong {0}" , ex);
             }
         }
         LOG.log(Level.INFO, "Nothing to do now, i go sleep");
@@ -55,8 +54,7 @@ public class Worker extends Thread {
             String words[] = pdfFIleInText.split("\\r?\\n");
 
             for (String word : words) {
-                monitor.updateOccurences(word);
-                monitor.updataNumberWordProcessed();
+                numberOfRecordProcessed = monitor.updateOccurences(word);
             }
             document.close();
         } catch (IOException e) {
@@ -65,6 +63,6 @@ public class Worker extends Thread {
     }
 
     private File getFile() {
-        return dispatcher.getNextFile();
+        return monitor.getNextFile();
     }
 }
