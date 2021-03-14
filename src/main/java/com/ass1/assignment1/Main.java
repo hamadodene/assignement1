@@ -7,26 +7,19 @@ package com.ass1.assignment1;
 public class Main {
     
     public static void main(String[] args) {
-        int THREADS = 0;
-        System.out.println("Starting programm");
+        System.out.println("Starting program");
         String path = "src/main/resources";
+        int THREADS = 0;
         FilesProcessor process = new FilesProcessor(path);
-        if(Runtime.getRuntime().availableProcessors() < 3){
-            THREADS = 3;
-        } else {
-            THREADS = Runtime.getRuntime().availableProcessors();
-        }       
-        if(THREADS > process.getNumberOfFile()) {
-            THREADS = process.getNumberOfFile();
-        }
+        process.init();
+        THREADS = process.getWorkers();
         System.out.println("Use " + THREADS  + " threads");
-        Occurences occurences = new Occurences();
-        Monitor monitor = new Monitor(occurences,process);
+        Occurrences occurrences = new Occurrences();
+        Monitor monitor = new Monitor(occurrences,process);
         Worker[] workers = new Worker[THREADS];
         for(int i  = 0 ; i < THREADS ; i++) {
             workers[i] = new Worker(monitor);
             workers[i].start();
         }
-        
     }   
 }

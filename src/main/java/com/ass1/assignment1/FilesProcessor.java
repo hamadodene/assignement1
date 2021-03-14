@@ -22,21 +22,20 @@ public final class FilesProcessor {
     
     public FilesProcessor(String directory) {
         this.directory = directory;
-        initializePdfFiles(new File(directory));
     }
-    /*
+
     public void init(){
         if(Runtime.getRuntime().availableProcessors() < 3) {
             THREADS = 3;
         } else {
             THREADS = Runtime.getRuntime().availableProcessors();
         }
-        IinitializePdfFiles(new File(directory));
-        
+        initializePdfFiles(new File(directory));
+
         if(THREADS > pdfFilesAbsolutePath.size()) {
             THREADS = pdfFilesAbsolutePath.size();
         }
-    }*/
+    }
 
     private void initializePdfFiles(final File folder) {
         String tempFileName = "";
@@ -51,7 +50,7 @@ public final class FilesProcessor {
                         pdfFilesAbsolutePath.add(tempFileName);
                     }
                 } else {
-                    LOG.log(Level.INFO, "Skiping direcory {0}", entry.getAbsolutePath());
+                    LOG.log(Level.INFO, "Skipping directory {0}", entry.getAbsolutePath());
                 }
             }
         }
@@ -89,7 +88,7 @@ public final class FilesProcessor {
         return false;
     }
     
-    public static int getWorkers() {
+    public int getWorkers() {
         return THREADS;
     }
 }

@@ -10,17 +10,17 @@ import java.util.stream.Collectors;
  *
  * @author Hamado Dene
  */
-public class Occurences {
+public class Occurrences {
     
     private final Map<String, Integer> words;
     private final int DEFAULT_WORD_COUNT = 1;
     private int numberOfWordProcessed = 0;
     
-    public Occurences () {
+    public Occurrences() {
         words = new HashMap<>();
     }
     
-    public int addOccurences( String word) {
+    public int addOccurrence(String word) {
         if(words.containsKey(word)){
             int value = words.get(word);
             words.put(word, value++);

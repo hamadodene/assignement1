@@ -37,7 +37,7 @@ public class Worker extends Thread {
                     long t = _stop - _start;
 
                     LOG.log(Level.INFO, "Processed pdf {0} in {1} ms", new Object[]{file.getName(), t});
-                    LOG.log(Level.INFO, "Processed actualy {0} words", numberOfRecordProcessed);
+                    LOG.log(Level.INFO, "Processed actually {0} words", numberOfRecordProcessed);
                 }
             } catch (InterruptedException ex) {
                 LOG.log(Level.SEVERE, "Something went wrong {0}" , ex);
@@ -54,11 +54,11 @@ public class Worker extends Thread {
             String words[] = pdfFIleInText.split("\\r?\\n");
 
             for (String word : words) {
-                numberOfRecordProcessed = monitor.updateOccurences(word);
+                numberOfRecordProcessed = monitor.updateOccurence(word);
             }
             document.close();
         } catch (IOException e) {
-            LOG.log(Level.SEVERE, "Somethiing went wrong {0}", e.toString());
+            LOG.log(Level.SEVERE, "Something went wrong {0}", e.toString());
         }
     }
 

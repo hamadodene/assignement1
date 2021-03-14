@@ -10,19 +10,18 @@ import java.util.logging.Logger;
 public class Monitor {
 
     static final Logger LOG = Logger.getLogger(Monitor.class.getName());
-    private final Occurences occurences;
+    private final Occurrences occurrences;
     private final FilesProcessor filesProcessor;
-    public int FORCE_STOP_VALUE = -99;
     
 
-    public Monitor(Occurences occurences, FilesProcessor fileprocessor) {
-        this.occurences = occurences;
-        this.filesProcessor = fileprocessor;
+    public Monitor(Occurrences occurrences, FilesProcessor fileProcessor) {
+        this.occurrences = occurrences;
+        this.filesProcessor = fileProcessor;
     }
 
-    //Update word occurences
-    public synchronized int updateOccurences(String word) {    
-        return occurences.addOccurences(word);
+    //Update word occurrences
+    public synchronized int updateOccurence(String word) {
+        return occurrences.addOccurrence(word);
     }
 
     public synchronized File getNextFile() {
