@@ -10,7 +10,6 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
 /**
- *
  * @author Hamado Dene
  */
 public class Worker extends Thread {
@@ -19,6 +18,7 @@ public class Worker extends Thread {
     private final Monitor monitor;
     static final Logger LOG = Logger.getLogger(Worker.class.getName());
     private int numberOfRecordProcessed = 0;
+    boolean verbose = Boolean.getBoolean("debug");
 
     public Worker(final String name, Monitor monitor) {
         super(name);
@@ -32,20 +32,26 @@ public class Worker extends Thread {
                 long _start = System.currentTimeMillis();
                 File file = getFile();
                 if (file != null) {
-                    LOG.log(Level.INFO, "{0} Parsing pdf {1}", new Object[]{this.getName(), file.getName()});
+                    if(verbose) {
+                        LOG.log(Level.FINE, "{0} Parsing pdf {1}", new Object[]{this.getName(), file.getName()});
+                    }
+                    LOG.log(Level.INFO, "parsing pdf " + file.getName());
                     //Parse pdf
                     parsePdf(file);
                     long _stop = System.currentTimeMillis();
                     long t = _stop - _start;
-
-                    LOG.log(Level.INFO, "Processed pdf {0} in {1} ms", new Object[]{file.getName(), t});
-                    LOG.log(Level.INFO, "Processed actually {0} words", numberOfRecordProcessed);
+                    if(verbose) {
+                        LOG.log(Level.FINE, "Processed pdf {0} in {1} ms", new Object[]{file.getName(), t});
+                        LOG.log(Level.FINE, "Processed actually {0} words", numberOfRecordProcessed);
+                    }
                 }
             } catch (InterruptedException ex) {
-                LOG.log(Level.SEVERE, "Something went wrong {0}" , ex);
+                LOG.log(Level.SEVERE, "{1} - Say: something went wrong {0}", new Object[]{this.getName(), ex});
             }
         }
-        LOG.log(Level.INFO, "Nothing to do now, i go sleep");
+        if(verbose) {
+            LOG.log(Level.FINE, "{0} - Say: Nothing to do now, i go sleep", this.getName());
+        }
     }
 
     void parsePdf(File file) throws InterruptedException {
@@ -56,11 +62,11 @@ public class Worker extends Thread {
             String words[] = pdfFIleInText.split("\\r?\\n");
 
             for (String word : words) {
-                 numberOfRecordProcessed = monitor.updateOccurence(word);
+                numberOfRecordProcessed = monitor.updateOccurence(word);
             }
             document.close();
-        } catch (IOException | ForcedStopException e) {
-            LOG.log(Level.SEVERE, "Something went wrong {0}", e.toString());
+        } catch (IOException | ForcedStopException ex) {
+            LOG.log(Level.SEVERE, "{1} - Say: something went wrong {0}", new Object[]{this.getName(), ex});
         }
     }
 

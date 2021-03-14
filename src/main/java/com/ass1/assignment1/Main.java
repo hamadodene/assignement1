@@ -48,8 +48,7 @@ public class Main {
 
         long _stop = System.currentTimeMillis();
         long _result = _stop - _start;
-        LOG.log(Level.SEVERE, "All worker are terminated in {0}  ms", _result );
-
+        LOG.log(Level.INFO, "All worker are terminated in {0}  ms", _result );
         LOG.log(Level.INFO, "result is: {0}", occurrences.getOccurences(n));
     }   
 }
