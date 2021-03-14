@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ass1.assignment1;
 
 import com.ass1.pdf.ReadPdf;
@@ -19,7 +14,7 @@ import org.junit.Test;
 
 /**
  *
- * @author hamado
+ * @author Hamado Dene
  */
 public class ReadPdfTest {
 

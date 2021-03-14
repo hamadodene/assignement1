@@ -2,10 +2,12 @@ package com.ass1.assignment1;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.ass1.assignment1.exception.ForcedStopException;
+import org.apache.commons.logging.Log;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
@@ -60,9 +62,17 @@ public class Worker extends Thread {
             PDFTextStripper stripper = new PDFTextStripper();
             String pdfFIleInText = stripper.getText(document);
             String words[] = pdfFIleInText.split("\\r?\\n");
+            List<String> exclusion = monitor.wordsToExclude();
 
             for (String word : words) {
-                numberOfRecordProcessed = monitor.updateOccurence(word);
+                if(!exclusion.contains(word)) {
+                    numberOfRecordProcessed = monitor.updateOccurence(word);
+                } else {
+                    if(verbose) {
+                        LOG.log(Level.FINE, "Exclude word {0} " , word);
+                    }
+                    // LOG.log(Level.INFO, "Exclude word {0} " + word);
+                }
             }
             document.close();
         } catch (IOException | ForcedStopException ex) {

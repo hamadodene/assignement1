@@ -3,6 +3,7 @@ package com.ass1.assignment1;
 import com.ass1.assignment1.exception.ForcedStopException;
 
 import java.io.File;
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
@@ -48,6 +49,10 @@ public class Monitor {
 
     public boolean existNextFile() {
         return filesProcessor.existNextFile();
+    }
+
+    public List<String> wordsToExclude() {
+        return filesProcessor.getWordsToExclude();
     }
 
     public void setAvailable(boolean started) {
