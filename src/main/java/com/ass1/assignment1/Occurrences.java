@@ -35,7 +35,7 @@ public class Occurrences {
         return numberOfWordProcessed;
     }
     
-    public Map<String, Integer> getOccurences(int n) {
+    public Map<String, Integer> getOccurrences(int n) {
         if(words.isEmpty()) {
             return null;
         }

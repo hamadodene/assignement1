@@ -7,7 +7,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.ass1.assignment1.exception.ForcedStopException;
-import org.apache.commons.logging.Log;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
@@ -66,7 +65,7 @@ public class Worker extends Thread {
 
             for (String word : words) {
                 if(!exclusion.contains(word)) {
-                    numberOfRecordProcessed = monitor.updateOccurence(word);
+                    numberOfRecordProcessed = monitor.updateOccurrence(word);
                 } else {
                     if(verbose) {
                         LOG.log(Level.FINE, "Exclude word {0} " , word);

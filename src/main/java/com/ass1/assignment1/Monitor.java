@@ -17,18 +17,16 @@ public class Monitor {
     private final Occurrences occurrences;
     private final FilesProcessor filesProcessor;
     private boolean forceStop;
-    private boolean available;
     private Lock mutex;
 
     public Monitor(Occurrences occurrences, FilesProcessor fileProcessor) {
         this.occurrences = occurrences;
         this.filesProcessor = fileProcessor;
-        available = true;
         mutex = new ReentrantLock();
     }
 
-    //Update word occurrences
-    public int updateOccurence(String word) throws ForcedStopException, InterruptedException {
+    //Update word occurrence
+    public int updateOccurrence(String word) throws ForcedStopException, InterruptedException {
         mutex.lock();
         try {
             int result = occurrences.addOccurrence(word);
@@ -53,11 +51,6 @@ public class Monitor {
 
     public List<String> wordsToExclude() {
         return filesProcessor.getWordsToExclude();
-    }
-
-    public void setAvailable(boolean started) {
-        this.available = available;
-        notifyAll();
     }
 
     public void forceStop() {
