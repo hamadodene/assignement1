@@ -46,8 +46,7 @@ public class WorkerImp extends Thread {
                         LOG.log(Level.FINE, "Processed actually {0} words", numberOfRecordProcessed);
                     }
                 }
-            } catch (InterruptedException ex) {
-                LOG.log(Level.SEVERE, "{1} - Says: something went wrong {0}", new Object[]{this.getName(), ex});
+            } catch (InterruptedException | ForcedStopException ex) {
                 this.interrupt();
             }
         }
@@ -80,7 +79,7 @@ public class WorkerImp extends Thread {
         }
     }
 
-    private File getFile() {
+    private File getFile() throws ForcedStopException, InterruptedException {
         return monitor.getNextFile();
     }
 

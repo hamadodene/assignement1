@@ -18,28 +18,9 @@ public class Main {
     public static void main(String[] args) throws IncorrectDirectoryException, IncorrectFileException {
         System.out.println("Starting program");
         int n = 1;
-        /*
+
         String path = "src/main/resources";
         String file = "src/main/resources/exclude.txt";
-        int n = 5;
-        */
-
-        //Get info from command line
-        Scanner scanner = new Scanner(System.in);
-        LOG.log(Level.INFO, "Enter pdf files path");
-        String path = scanner.nextLine();
-        LOG.log(Level.INFO, "Enter exclusion files path");
-        String file = scanner.nextLine();
-        LOG.log(Level.INFO, "Enter number of occurrences you want print");
-        n = scanner.nextInt();
-
-
-        //Get input via JVM parameters
-        /*
-            String _path = System.getProperty("PDF.FILES.PATH");
-            String _esclutionFile = System.getProperty("WORD.EXCLUSION.FILE");
-            int n_occurences = Integer.getInteger("WORD.OCCURENCES");
-        */
 
         int THREADS = 0;
         FilesProcessorImpl process = new FilesProcessorImpl(path, file);
