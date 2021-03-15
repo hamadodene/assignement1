@@ -14,22 +14,26 @@ import java.util.logging.Logger;
 public class Monitor {
 
     static final Logger LOG = Logger.getLogger(Monitor.class.getName());
-    private final Occurrences occurrences;
-    private final FilesProcessor filesProcessor;
+    private final OccurrencesImpl occurrencesImpl;
+    private final FilesProcessorImpl filesProcessorImpl;
+    private boolean started;
     private boolean forceStop;
+    public int FORCE_STOP_VALUE = -99;
     private Lock mutex;
 
-    public Monitor(Occurrences occurrences, FilesProcessor fileProcessor) {
-        this.occurrences = occurrences;
-        this.filesProcessor = fileProcessor;
+    public Monitor(OccurrencesImpl occurrences, FilesProcessorImpl fileProcessor) {
+        this.occurrencesImpl = occurrences;
+        this.filesProcessorImpl = fileProcessor;
         mutex = new ReentrantLock();
+        this.started = false;
+        this.forceStop = false;
     }
 
     //Update word occurrence
     public int updateOccurrence(String word) throws ForcedStopException, InterruptedException {
         mutex.lock();
         try {
-            int result = occurrences.addOccurrence(word);
+            int result = occurrencesImpl.addOccurrence(word);
             return result;
         } finally {
             mutex.unlock();
@@ -39,22 +43,27 @@ public class Monitor {
     public File getNextFile() {
         mutex.lock();
         try {
-            return filesProcessor.getNextFile();
+            return filesProcessorImpl.getNextFile();
         } finally {
             mutex.unlock();
         }
     }
 
     public boolean existNextFile() {
-        return filesProcessor.existNextFile();
+        return filesProcessorImpl.existNextFile();
     }
 
     public List<String> wordsToExclude() {
-        return filesProcessor.getWordsToExclude();
+        return filesProcessorImpl.getWordsToExclude();
     }
 
     public void forceStop() {
         forceStop = true;
+        notifyAll();
+    }
+
+    public synchronized  void setStarted(boolean started) {
+        this.started = started;
         notifyAll();
     }
 }

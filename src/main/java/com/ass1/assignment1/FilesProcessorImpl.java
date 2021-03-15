@@ -2,27 +2,24 @@ package com.ass1.assignment1;
 
 import com.ass1.assignment1.exception.IncorrectDirectoryException;
 import com.ass1.assignment1.exception.IncorrectFileException;
+import com.ass1.assignment1.interfaces.FileProcessor;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * @author Hamado Dene
  */
-public final class FilesProcessor {
+public final class FilesProcessorImpl implements FileProcessor {
 
-    static final Logger LOG = Logger.getLogger(FilesProcessor.class.getName());
+    static final Logger LOG = Logger.getLogger(FilesProcessorImpl.class.getName());
     private static final ArrayList<String> pdfFilesAbsolutePath = new ArrayList<String>();
     private static List<String> wordsToExclude = new ArrayList<String>();
     private final String directory;
@@ -31,7 +28,7 @@ public final class FilesProcessor {
     private static int nextFile = -1;
     private static int THREADS;
 
-    public FilesProcessor(String directory, String file) {
+    public FilesProcessorImpl(String directory, String file) {
         this.directory = directory;
         this.file = file;
     }
@@ -71,7 +68,6 @@ public final class FilesProcessor {
                 LOG.log(Level.INFO, "Skipping directory {0}", entry.getAbsolutePath());
             }
         }
-
         numberOfFile = pdfFilesAbsolutePath.size();
     }
 
@@ -95,6 +91,7 @@ public final class FilesProcessor {
         }
     }
 
+    @Override
     public File getNextFile() {
         nextFile++;
         if (nextFile < pdfFilesAbsolutePath.size()) {
@@ -104,27 +101,32 @@ public final class FilesProcessor {
         }
     }
 
-    private String getExtensionByStringHandling(String filename) {
+    @Override
+    public String getExtensionByStringHandling(String filename) {
         return Optional.ofNullable(filename)
                 .filter(f -> f.contains("."))
                 .map(f -> f.substring(filename.lastIndexOf(".") + 1))
                 .orElse("");
     }
 
+    @Override
     public int getNumberOfFile() {
         return this.numberOfFile;
     }
 
+    @Override
     public boolean existNextFile() {
         if (nextFile < pdfFilesAbsolutePath.size()) {
             return true;
         }
         return false;
     }
-
+    @Override
     public int getWorkers() {
         return THREADS;
     }
+
+    @Override
     public List<String> getWordsToExclude() {
         return wordsToExclude;
     }

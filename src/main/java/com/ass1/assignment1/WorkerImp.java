@@ -13,15 +13,15 @@ import org.apache.pdfbox.text.PDFTextStripper;
 /**
  * @author Hamado Dene
  */
-public class Worker extends Thread {
+public class WorkerImp extends Thread {
 
     private PDDocument document;
     private final Monitor monitor;
-    static final Logger LOG = Logger.getLogger(Worker.class.getName());
+    static final Logger LOG = Logger.getLogger(WorkerImp.class.getName());
     private int numberOfRecordProcessed = 0;
     boolean verbose = Boolean.getBoolean("debug");
 
-    public Worker(final String name, Monitor monitor) {
+    public WorkerImp(final String name, Monitor monitor) {
         super(name);
         this.monitor = monitor;
     }
@@ -48,6 +48,7 @@ public class Worker extends Thread {
                 }
             } catch (InterruptedException ex) {
                 LOG.log(Level.SEVERE, "{1} - Says: something went wrong {0}", new Object[]{this.getName(), ex});
+                this.interrupt();
             }
         }
         if(verbose) {
@@ -55,7 +56,7 @@ public class Worker extends Thread {
         }
     }
 
-    void parsePdf(File file) throws InterruptedException {
+    private void parsePdf(File file) throws InterruptedException {
         try {
             document = PDDocument.load(file);
             PDFTextStripper stripper = new PDFTextStripper();
@@ -82,4 +83,5 @@ public class Worker extends Thread {
     private File getFile() {
         return monitor.getNextFile();
     }
+
 }

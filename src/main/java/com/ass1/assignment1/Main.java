@@ -26,13 +26,13 @@ public class Main {
 
         //Get info from command line
         Scanner scanner = new Scanner(System.in);
+        LOG.log(Level.INFO, "Enter pdf files path");
+        String path = scanner.nextLine();
         LOG.log(Level.INFO, "Enter exclusion files path");
         String file = scanner.nextLine();
         LOG.log(Level.INFO, "Enter number of occurrences you want print");
-        //default 1
         n = scanner.nextInt();
-        LOG.log(Level.INFO, "Enter pdf files path");
-        String path = scanner.nextLine();
+
 
         //Get input via JVM parameters
         /*
@@ -42,33 +42,35 @@ public class Main {
         */
 
         int THREADS = 0;
-        FilesProcessor process = new FilesProcessor(path, file);
-        Occurrences occurrences = new Occurrences();
-        Monitor monitor = new Monitor(occurrences,process);
+        FilesProcessorImpl process = new FilesProcessorImpl(path, file);
+        OccurrencesImpl occurrencesImpl = new OccurrencesImpl();
+        Monitor monitor = new Monitor(occurrencesImpl,process);
         //Initialize
         process.init();
-        List<Worker> workers = new ArrayList<Worker>();
+        List<WorkerImp> workers = new ArrayList<WorkerImp>();
 
         for(int i = 0; i <process.getWorkers(); i++) {
-            workers.add(new Worker("Worker-" + i, monitor));
+            workers.add(new WorkerImp("Worker-" + i, monitor));
         }
 
         long _start = System.currentTimeMillis();
 
-        for (Worker worker : workers) {
+        for (WorkerImp worker : workers) {
             worker.start();
+
         }
-        for (Worker worker: workers) {
+        for (WorkerImp worker: workers) {
             try {
                 worker.join();
             }catch (InterruptedException ex) {
                 LOG.log(Level.SEVERE, "Something went wrong:  {0}", ex);
+                worker.interrupt();
             }
         }
 
         long _stop = System.currentTimeMillis();
         long _result = _stop - _start;
         LOG.log(Level.INFO, "All worker are terminated in {0}  ms", _result );
-        LOG.log(Level.INFO, "result is: {0}", occurrences.getOccurrences(n));
+        LOG.log(Level.INFO, "result is: {0}", occurrencesImpl.getOccurrences(n));
     }   
 }

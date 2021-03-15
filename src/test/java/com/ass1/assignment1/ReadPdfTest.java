@@ -43,7 +43,7 @@ public class ReadPdfTest {
                 cont.setFont(PDType1Font.TIMES_ROMAN, 12);
                 cont.setLeading(14.5f);
                 cont.newLineAtOffset(25, 700);
-                String line1 = "prova1";
+                String line1 = "prova1 prova55";
                 cont.showText(line1);
 
                 cont.newLine();
