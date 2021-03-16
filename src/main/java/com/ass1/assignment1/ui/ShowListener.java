@@ -1,13 +1,15 @@
 package com.ass1.assignment1.ui;
 
+import com.ass1.assignment1.logger.CustomPrintStream;
+import com.ass1.assignment1.logger.GuiOutPutStream;
+
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.io.PrintStream;
 
 public class ShowListener {
     private JFrame mainFrame;
     private JTextField field1,field2,field3;
+    private GuiOutPutStream output;
 
     public void prepareGui() {
         mainFrame = new JFrame("PCD Assignment 1 - GUI version");
@@ -55,6 +57,11 @@ public class ShowListener {
         JScrollPane scroll = new JScrollPane(log);
         scroll.setBounds(50, 250, 500, 250);
         log.setEditable(false);
+
+        output = new GuiOutPutStream(log);
+        System.setOut(new PrintStream(output, true));
+        System.setOut(new CustomPrintStream(System.out));
+
         mainFrame.getContentPane().add(scroll);
         
         start.addActionListener(new StartListener());

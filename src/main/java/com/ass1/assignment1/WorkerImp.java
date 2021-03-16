@@ -17,7 +17,7 @@ public class WorkerImp extends Thread {
 
     private PDDocument document;
     private final Monitor monitor;
-    static final Logger LOG = Logger.getLogger(WorkerImp.class.getName());
+    private static final Logger LOG = Logger.getLogger(WorkerImp.class.getName());
     private int numberOfRecordProcessed = 0;
     boolean verbose = Boolean.getBoolean("debug");
 
@@ -71,6 +71,7 @@ public class WorkerImp extends Thread {
                         LOG.log(Level.FINE, "Exclude word {0} " , word);
                     }
                     // LOG.log(Level.INFO, "Exclude word {0} " + word);
+
                 }
             }
             document.close();
