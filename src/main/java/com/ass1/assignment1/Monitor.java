@@ -26,13 +26,6 @@ public class Monitor {
         this.forceStop = false;
     }
 
-    public static Monitor instance(OccurrencesImpl occurrences, FilesProcessorImpl filesProcessor) {
-        if (_instance == null) {
-            _instance = new Monitor(occurrences, filesProcessor);
-        }
-        return _instance;
-    }
-
     //Update word occurrence
     public synchronized int updateOccurrence(String word) throws ForcedStopException, InterruptedException {
         while (!started) {
@@ -65,8 +58,8 @@ public class Monitor {
         return filesProcessor.getWordsToExclude();
     }
 
-    public void forceStop() {
-        forceStop = true;
+    public void forceStop(boolean forceStop) {
+        this.forceStop = forceStop;
         notifyAll();
     }
 

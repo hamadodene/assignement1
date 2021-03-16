@@ -9,10 +9,6 @@ import java.util.logging.Logger;
 public class GuiMainTest {
     private static final Logger LOG = Logger.getLogger(WorkerImp.class.getName());
     public static void main(String[] args) {
-        new ShowListener().prepareGui();
-        System.out.println("Starting program");
-        System.out.println("Starting program");
-        System.out.println("Starting program");
-        System.out.println("Starting program");
+        new GuiController().init();
     }
 }

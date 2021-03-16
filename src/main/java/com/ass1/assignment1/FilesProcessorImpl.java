@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -41,7 +40,7 @@ public final class FilesProcessorImpl implements FileProcessor {
         }
         initializePdfFiles(new File(directory));
         if(file == null) {
-            LOG.log(Level.INFO, "Exclusion file does not specified, Proceed without exclusions");
+            System.out.println("Exclusion file does not specified, Proceed without exclusions");
         } else {
             initializeWordsToExclude(new File(file));
         }
@@ -59,13 +58,13 @@ public final class FilesProcessorImpl implements FileProcessor {
             if (entry.isFile()) {
                 String extension = getExtensionByStringHandling(entry.getName());
                 if (!"pdf".equals(extension)) {
-                    LOG.log(Level.INFO, "Skipping file {0} because not a pdf files", entry.getName());
+                    System.out.println("Skipping file" + entry.getName() +  " because not a pdf files");
                 } else {
                     tempFileName = entry.getAbsolutePath();
                     pdfFilesAbsolutePath.add(tempFileName);
                 }
             } else {
-                LOG.log(Level.INFO, "Skipping directory {0}", entry.getAbsolutePath());
+                System.out.println("Skipping directory " + entry.getAbsolutePath());
             }
         }
         numberOfFile = pdfFilesAbsolutePath.size();
@@ -87,7 +86,7 @@ public final class FilesProcessorImpl implements FileProcessor {
                 }
             }
         } catch (IOException e) {
-            LOG.log(Level.SEVERE, "Something went wrong, please check {0}", e);
+            System.out.println("Something went wrong, please check " + e );
         }
     }
 

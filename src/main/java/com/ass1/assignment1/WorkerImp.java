@@ -36,15 +36,12 @@ public class WorkerImp extends Thread {
                     if(verbose) {
                         LOG.log(Level.FINE, "{0} Parsing pdf {1}", new Object[]{this.getName(), file.getName()});
                     }
-                    LOG.log(Level.INFO, "parsing pdf " + file.getName());
+                    System.out.println("Parsing pdf " + file.getName());
                     //Parse pdf
                     parsePdf(file);
                     long _stop = System.currentTimeMillis();
                     long t = _stop - _start;
-                    if(verbose) {
-                        LOG.log(Level.FINE, "Processed pdf {0} in {1} ms", new Object[]{file.getName(), t});
-                        LOG.log(Level.FINE, "Processed actually {0} words", numberOfRecordProcessed);
-                    }
+                    System.out.println("Processed actually " + numberOfRecordProcessed + " words in "  + t);
                 }
             } catch (InterruptedException | ForcedStopException ex) {
                 this.interrupt();
@@ -67,16 +64,12 @@ public class WorkerImp extends Thread {
                 if(!exclusion.contains(word)) {
                     numberOfRecordProcessed = monitor.updateOccurrence(word);
                 } else {
-                    if(verbose) {
-                        LOG.log(Level.FINE, "Exclude word {0} " , word);
-                    }
-                    // LOG.log(Level.INFO, "Exclude word {0} " + word);
-
+                    System.out.println("Exclude word " + word);
                 }
             }
             document.close();
         } catch (IOException | ForcedStopException ex) {
-            LOG.log(Level.SEVERE, "{1} - Says: something went wrong {0}", new Object[]{this.getName(), ex});
+            System.out.println("Something went wrong, please check " + ex);
         }
     }
 

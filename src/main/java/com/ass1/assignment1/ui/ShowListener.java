@@ -1,5 +1,7 @@
 package com.ass1.assignment1.ui;
 
+import com.ass1.assignment1.FilesProcessorImpl;
+import com.ass1.assignment1.Monitor;
 import com.ass1.assignment1.logger.CustomPrintStream;
 import com.ass1.assignment1.logger.GuiOutPutStream;
 
@@ -64,7 +66,7 @@ public class ShowListener {
 
         mainFrame.getContentPane().add(scroll);
         
-        start.addActionListener(new StartListener());
+        start.addActionListener(new StartListener(field1, field2, field3));
         stop.addActionListener(new StopListener());
 
         mainFrame.setVisible(true);

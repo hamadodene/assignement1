@@ -17,7 +17,8 @@ public class OccurrencesImpl implements Occurrences {
     private final Map<String, Integer> words;
     private final int DEFAULT_WORD_COUNT = 1;
     private int numberOfWordProcessed = 0;
-    
+    private final OccurrencesImpl instance = new OccurrencesImpl();
+
     public OccurrencesImpl() {
         words = new HashMap<>();
     }
@@ -63,4 +64,5 @@ public class OccurrencesImpl implements Occurrences {
     public Map<String,Integer> getAllWords() {
         return words;
     }
+
 }

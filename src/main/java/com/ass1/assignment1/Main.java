@@ -44,14 +44,14 @@ public class Main {
             try {
                 worker.join();
             }catch (InterruptedException ex) {
-                LOG.log(Level.SEVERE, "Something went wrong:  {0}", ex);
+                System.out.println("Something went wrong: " + ex);
                 worker.interrupt();
             }
         }
 
         long _stop = System.currentTimeMillis();
         long _result = _stop - _start;
-        LOG.log(Level.INFO, "All worker are terminated in {0}  ms", _result );
-        LOG.log(Level.INFO, "result is: {0}", occurrencesImpl.getOccurrences(n));
+        System.out.println("All worker are terminated in " + _result + " ms");
+        System.out.println("result is: " + occurrencesImpl.getOccurrences(n));
     }   
 }
