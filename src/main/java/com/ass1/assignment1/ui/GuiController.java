@@ -1,42 +1,42 @@
 package com.ass1.assignment1.ui;
 
-import com.ass1.assignment1.FilesProcessorImpl;
 import com.ass1.assignment1.Monitor;
 import com.ass1.assignment1.OccurrencesImpl;
-import com.ass1.assignment1.WorkerImp;
-import com.ass1.assignment1.interfaces.Occurrences;
+import com.ass1.assignment1.WorkerImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GuiController {
 
-    private FilesProcessorImpl filesProcessor;
     private OccurrencesImpl occurrences;
     private Monitor monitor;
+    private List<WorkerImpl> workers;
 
     public GuiController() {
-
+        occurrences = new OccurrencesImpl();
+        monitor = new Monitor(occurrences);
+        workers = new ArrayList<WorkerImpl>();
+        monitor.init();
     }
 
     public void init() {
-        new ShowListener().prepareGui();
+        new ShowListener().prepareGui(this);
     }
 
     public void begin() {
-        List<WorkerImp> workers = new ArrayList<WorkerImp>();
-
-        for(int i = 0; i < filesProcessor.getWorkers(); i++) {
-            workers.add(new WorkerImp("Worker-" + i, monitor));
-        }
-
         long _start = System.currentTimeMillis();
-
-        for (WorkerImp worker : workers) {
-            worker.start();
-
+        int THREADS = monitor.getWorkers();
+        if(THREADS > monitor.getNumberOfFiles()) {
+            THREADS = monitor.getNumberOfFiles();
         }
-        for (WorkerImp worker: workers) {
+        for(int i = 0; i <  THREADS; i++) {
+            workers.add(new WorkerImpl("Worker-" + i, monitor));
+        }
+        for (WorkerImpl worker : workers) {
+            worker.run();
+        }
+        for (WorkerImpl worker: workers) {
             try {
                 worker.join();
             }catch (InterruptedException ex) {

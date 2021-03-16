@@ -13,15 +13,15 @@ import org.apache.pdfbox.text.PDFTextStripper;
 /**
  * @author Hamado Dene
  */
-public class WorkerImp extends Thread {
+public class WorkerImpl extends Thread {
 
     private PDDocument document;
     private final Monitor monitor;
-    private static final Logger LOG = Logger.getLogger(WorkerImp.class.getName());
+    private static final Logger LOG = Logger.getLogger(WorkerImpl.class.getName());
     private int numberOfRecordProcessed = 0;
     boolean verbose = Boolean.getBoolean("debug");
 
-    public WorkerImp(final String name, Monitor monitor) {
+    public WorkerImpl(final String name, Monitor monitor) {
         super(name);
         this.monitor = monitor;
     }
@@ -41,14 +41,11 @@ public class WorkerImp extends Thread {
                     parsePdf(file);
                     long _stop = System.currentTimeMillis();
                     long t = _stop - _start;
-                    System.out.println("Processed actually " + numberOfRecordProcessed + " words in "  + t);
+                    System.out.println("Processed actually " + numberOfRecordProcessed + " words in "  + t + "ms");
                 }
             } catch (InterruptedException | ForcedStopException ex) {
                 this.interrupt();
             }
-        }
-        if(verbose) {
-            LOG.log(Level.FINE, "{0} - Says: Nothing to do now, i go sleep", this.getName());
         }
     }
 

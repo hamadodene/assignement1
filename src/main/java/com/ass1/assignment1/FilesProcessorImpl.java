@@ -16,42 +16,23 @@ import java.util.logging.Logger;
 /**
  * @author Hamado Dene
  */
-public final class FilesProcessorImpl implements FileProcessor {
+public class FilesProcessorImpl implements FileProcessor {
 
     static final Logger LOG = Logger.getLogger(FilesProcessorImpl.class.getName());
     private static final ArrayList<String> pdfFilesAbsolutePath = new ArrayList<String>();
     private static List<String> wordsToExclude = new ArrayList<String>();
-    private final String directory;
-    private final String file;
     private int numberOfFile = 0;
     private static int nextFile = -1;
     private static int THREADS;
 
-    public FilesProcessorImpl(String directory, String file) {
-        this.directory = directory;
-        this.file = file;
+    public FilesProcessorImpl() {
     }
 
-    public void init() throws IncorrectDirectoryException, IncorrectFileException {
-        if (Runtime.getRuntime().availableProcessors() < 3) {
-            THREADS = 3;
-        } else {
-            THREADS = Runtime.getRuntime().availableProcessors();
-        }
-        initializePdfFiles(new File(directory));
-        if(file == null) {
-            System.out.println("Exclusion file does not specified, Proceed without exclusions");
-        } else {
-            initializeWordsToExclude(new File(file));
-        }
-        if (THREADS > pdfFilesAbsolutePath.size()) {
-            THREADS = pdfFilesAbsolutePath.size();
-        }
-    }
+    public void initializePdfFiles(final String path) throws IncorrectDirectoryException {
+        File folder = new File(path);
 
-    private void initializePdfFiles(final File folder) throws IncorrectDirectoryException {
         String tempFileName = "";
-        if (!folder.exists() || !folder.isDirectory()) {
+        if (!folder.exists() || !folder.isDirectory() || folder == null) {
             throw new IncorrectDirectoryException("Wrong folder pass, please correct");
         }
         for (final File entry : folder.listFiles()) {
@@ -70,8 +51,10 @@ public final class FilesProcessorImpl implements FileProcessor {
         numberOfFile = pdfFilesAbsolutePath.size();
     }
 
-    private void initializeWordsToExclude (final File file) throws IncorrectFileException {
-        if(!file.isFile() || !file.exists()) {
+    public void initializeWordsToExclude (final String exclusionFile) throws IncorrectFileException {
+        File file = new File(exclusionFile);
+
+        if(!file.isFile() || !file.exists() || file == null) {
             throw new IncorrectFileException("File not correct, please check");
         }
         boolean format = false;
@@ -128,5 +111,9 @@ public final class FilesProcessorImpl implements FileProcessor {
     @Override
     public List<String> getWordsToExclude() {
         return wordsToExclude;
+    }
+
+    public int getFilesSize() {
+        return pdfFilesAbsolutePath.size();
     }
 }

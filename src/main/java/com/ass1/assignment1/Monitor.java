@@ -12,18 +12,27 @@ import java.util.logging.Logger;
 public class Monitor {
 
     static final Logger LOG = Logger.getLogger(Monitor.class.getName());
-    private static Monitor _instance = null;
     private final OccurrencesImpl occurrences;
     private final FilesProcessorImpl filesProcessor;
     private boolean started;
     private boolean forceStop;
     public int FORCE_STOP_VALUE = -99;
+    private static  int THREADS;
 
-    public Monitor(OccurrencesImpl occurrences, FilesProcessorImpl fileProcessor) {
+    public Monitor(OccurrencesImpl occurrences) {
         this.occurrences = occurrences;
-        this.filesProcessor = fileProcessor;
+        filesProcessor = new FilesProcessorImpl();
         this.started = false;
         this.forceStop = false;
+    }
+
+    public void init() {
+        if (Runtime.getRuntime().availableProcessors() < 3) {
+            THREADS = 3;
+        } else {
+            THREADS = Runtime.getRuntime().availableProcessors();
+        }
+        System.out.println("Threads " + THREADS);
     }
 
     //Update word occurrence
@@ -41,6 +50,7 @@ public class Monitor {
 
     public synchronized File getNextFile() throws InterruptedException, ForcedStopException {
         while (!started) {
+            System.out.println("Waiting");
             wait();
             if(forceStop) {
                 throw new ForcedStopException();
@@ -63,8 +73,20 @@ public class Monitor {
         notifyAll();
     }
 
-    public synchronized void setStarted(boolean started) {
+    public void setStarted(boolean started) {
         this.started = started;
-        notifyAll();
     }
+
+    public int getWorkers() {
+        return THREADS;
+    }
+
+    public boolean getStop() {
+        return forceStop;
+    }
+
+    public int  getNumberOfFiles() {
+        return filesProcessor.getFilesSize();
+    }
+
 }

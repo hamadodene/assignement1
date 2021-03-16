@@ -12,8 +12,10 @@ public class ShowListener {
     private JFrame mainFrame;
     private JTextField field1,field2,field3;
     private GuiOutPutStream output;
+    private GuiController controller;
 
-    public void prepareGui() {
+    public void prepareGui(GuiController controller) {
+        this.controller = controller;
         mainFrame = new JFrame("PCD Assignment 1 - GUI version");
         mainFrame.setBounds(100, 100, 730, 600);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -33,7 +35,7 @@ public class ShowListener {
         mainFrame.getContentPane().add(fl2);
 
         field2 = new JTextField();
-        field2.setBounds(180, 65, 100, 20);
+        field2.setBounds(180, 65, 200, 20);
         mainFrame.getContentPane().add(field2);
         field2.setColumns(10);
 
@@ -66,7 +68,7 @@ public class ShowListener {
 
         mainFrame.getContentPane().add(scroll);
         
-        start.addActionListener(new StartListener(field1, field2, field3));
+        start.addActionListener(new StartListener(field1, field2, field3, controller));
         stop.addActionListener(new StopListener());
 
         mainFrame.setVisible(true);
