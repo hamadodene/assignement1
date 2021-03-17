@@ -64,4 +64,7 @@ public final class OccurrencesImpl implements Occurrences {
         return words;
     }
 
+    public void flushOccurences() {
+        words.clear();
+    }
 }

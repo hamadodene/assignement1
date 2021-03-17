@@ -32,18 +32,19 @@ public class StartListener implements ActionListener {
         String path = field1.getText().trim();
         String file = field2.getText().trim();
         int n = Integer.parseInt(field3.getText().trim());
-        try {
-            new FilesProcessorImpl().initializePdfFiles(path);
-            new FilesProcessorImpl().initializeWordsToExclude(file);
-        } catch (IncorrectDirectoryException incorrectDirectoryException) {
-            System.out.println("Directory " + path + " not correct, please check");
-        } catch (IncorrectFileException incorrectFileException) {
-            System.out.println("File " + file + " not correct, please check");
-        }
-
-        //set started = true
-        controller.start();
-        //Send work
-        controller.begin();
+        new Thread(() -> {
+            try {
+                //Initialize pdf files
+                controller.initializePdfFiles(path);
+                //Initialize exclusion words
+                controller.initializeExclusionWords(file);
+            } catch (IncorrectDirectoryException | IncorrectFileException ex) {
+                System.out.println("Detected some error: " + ex.getMessage());
+            }
+            //set started = true
+            controller.start();
+            //Send work
+            controller.begin();
+        }).start();
     }
 }

@@ -1,6 +1,8 @@
 package com.ass1.assignment1;
 
 import com.ass1.assignment1.exception.ForcedStopException;
+import com.ass1.assignment1.exception.IncorrectDirectoryException;
+import com.ass1.assignment1.exception.IncorrectFileException;
 
 import java.io.File;
 import java.util.List;
@@ -11,12 +13,11 @@ import java.util.logging.Logger;
  */
 public class Monitor {
 
-    static final Logger LOG = Logger.getLogger(Monitor.class.getName());
     private final OccurrencesImpl occurrences;
     private final FilesProcessorImpl filesProcessor;
+    private static Monitor _instance = null;
     private boolean started;
     private boolean forceStop;
-    public int FORCE_STOP_VALUE = -99;
     private static  int THREADS;
 
     public Monitor(OccurrencesImpl occurrences) {
@@ -24,6 +25,13 @@ public class Monitor {
         filesProcessor = new FilesProcessorImpl();
         this.started = false;
         this.forceStop = false;
+    }
+
+    public static Monitor _instance(OccurrencesImpl occurrences){
+        if (_instance == null) {
+            _instance = new Monitor(occurrences);
+        }
+        return _instance;
     }
 
     public void init() {
@@ -39,7 +47,7 @@ public class Monitor {
         while (!started) {
             wait();
             if(forceStop) {
-                throw new ForcedStopException();
+                throw new ForcedStopException("Force Stop thread");
             }
         }
         int result = occurrences.addOccurrence(word);
@@ -51,7 +59,7 @@ public class Monitor {
         while (!started) {
             wait();
             if(forceStop) {
-                throw new ForcedStopException();
+                throw new ForcedStopException("Force Stop thread");
             }
         }
         notifyAll();
@@ -67,10 +75,7 @@ public class Monitor {
     }
 
     public void forceStop(boolean forceStop) {
-        System.out.println("Call stop 1");
         this.forceStop = forceStop;
-        //Maybe check if there are active threads
-        notifyAll();
     }
 
     public void setStarted(boolean started) {
@@ -89,4 +94,15 @@ public class Monitor {
         return filesProcessor.getFilesSize();
     }
 
+    public void initializePdfFiles(String path) throws IncorrectDirectoryException {
+        filesProcessor.initializePdfFiles(path);
+    }
+
+    public void initializeExclusionWords(String file) throws IncorrectFileException {
+        filesProcessor.initializeWordsToExclude(file);
+    }
+
+    public void flushOccurrences() {
+        occurrences.flushOccurences();
+    }
 }

@@ -3,6 +3,8 @@ package com.ass1.assignment1.ui;
 import com.ass1.assignment1.Monitor;
 import com.ass1.assignment1.OccurrencesImpl;
 import com.ass1.assignment1.Worker;
+import com.ass1.assignment1.exception.IncorrectDirectoryException;
+import com.ass1.assignment1.exception.IncorrectFileException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,7 @@ public class GuiController {
 
     public GuiController() {
         occurrences = new OccurrencesImpl();
-        monitor = new Monitor(occurrences);
+        monitor = Monitor._instance(occurrences);
         workers = new ArrayList<Worker>();
         monitor.init();
     }
@@ -50,12 +52,19 @@ public class GuiController {
     }
 
     public void stop() {
-        System.out.println("Call stop 1");
         monitor.forceStop(true);
     }
 
     public void start() {
         monitor.setStarted(true);
+    }
+
+    public void initializePdfFiles(String path) throws IncorrectDirectoryException {
+        monitor.initializePdfFiles(path);
+    }
+
+    public void initializeExclusionWords(String file) throws IncorrectFileException {
+        monitor.initializeExclusionWords(file);
     }
 
 }
