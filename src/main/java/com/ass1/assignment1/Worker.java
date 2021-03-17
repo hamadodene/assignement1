@@ -48,6 +48,13 @@ public class Worker extends Thread {
         System.out.println(this.getName() +": " + "Nothing to do, i go sleep");
     }
 
+    /**
+     *
+     * @param file
+     * @throws InterruptedException
+     *
+     * Parse pdf
+     */
     private void parsePdf(File file) throws InterruptedException {
         try {
             document = PDDocument.load(file);

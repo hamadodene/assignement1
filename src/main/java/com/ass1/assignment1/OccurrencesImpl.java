@@ -22,6 +22,13 @@ public class OccurrencesImpl implements Occurrences {
         words = new HashMap<>();
     }
 
+    /**
+     *
+     * @param word
+     * @return number of words processed
+     *
+     * Update/Add occurrence into Map
+     */
     @Override
     public int  addOccurrence(String word) {
         if(words.containsKey(word)){
@@ -51,7 +58,12 @@ public class OccurrencesImpl implements Occurrences {
                .limit(n)
                .collect(Collectors.toMap(Entry::getKey, Entry::getValue));        
     }
-    
+
+    /**
+     *
+     * @param wordCounts
+     * @return an ordered map
+     */
     private  static Map<String, Integer> sortByValue(final Map<String, Integer> wordCounts) {
         return wordCounts.entrySet()
                 .stream()
@@ -64,6 +76,7 @@ public class OccurrencesImpl implements Occurrences {
         return words;
     }
 
+    //flush words Map
     @Override
     public void flushOccurrences() {
         words.clear();

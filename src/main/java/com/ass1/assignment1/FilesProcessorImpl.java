@@ -52,14 +52,16 @@ public final class FilesProcessorImpl implements FileProcessor {
     @Override
     public void initializeWordsToExclude (final String exclusionFile) throws IncorrectFileException {
         File file = new File(exclusionFile);
-
+        //Check if file is valid, otherwise exit with an exception
         if(!file.isFile() || !file.exists() || file == null) {
             throw new IncorrectFileException("File not correct, please check");
         }
-        boolean format = false;
+
         try (BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()))){
             String line = br.readLine();
             while (line != null) {
+                //check if format is valid
+                //One word per line
                 if(line.matches(".*([ \\t]).*")){
                     throw new IncorrectFileException("File " + file.getName() + "format not correct, please check");
                 } else {
@@ -72,6 +74,11 @@ public final class FilesProcessorImpl implements FileProcessor {
         }
     }
 
+    /**
+     *
+     * @return the next file to be processed
+     *
+     */
     @Override
     public File getNextFile() {
         nextFile++;
