@@ -4,6 +4,10 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * @author Hamado Dene
+ * Stop button listener
+ */
 public class StopListener implements ActionListener {
 
     private GuiController controller;

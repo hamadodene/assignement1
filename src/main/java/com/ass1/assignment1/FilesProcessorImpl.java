@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 
 /**
  * @author Hamado Dene
+ * Files management class
  */
 public class FilesProcessorImpl implements FileProcessor {
 
@@ -115,5 +116,9 @@ public class FilesProcessorImpl implements FileProcessor {
 
     public int getFilesSize() {
         return pdfFilesAbsolutePath.size();
+    }
+
+    public void resetNextFile() {
+        nextFile = -1;
     }
 }

@@ -11,6 +11,7 @@ import java.io.PrintStream;
 public class ShowListener {
     private JFrame mainFrame;
     private JTextField field1,field2,field3;
+    private JLabel  result;
     private GuiOutPutStream output;
     private GuiController controller;
 
@@ -48,13 +49,22 @@ public class ShowListener {
         mainFrame.getContentPane().add(field3);
         field3.setColumns(10);
 
+//        JLabel lblAddress = new JLabel("Result");
+//        lblAddress.setBounds(65, 162, 46, 14);
+//        mainFrame.getContentPane().add(lblAddress);
+
+        result = new JLabel ("", JLabel.CENTER);
+        result.setSize(350,100);
+        result.setBounds(65, 130,350,100);
+        mainFrame.getContentPane().add(result);
+
         JButton start = new JButton("Start");
 
-        start.setBounds(312, 180, 89, 23);
+        start.setBounds(312, 220, 89, 23);
         mainFrame.getContentPane().add(start);
 
         JButton stop = new JButton("Stop");
-        stop.setBounds(65, 180, 89, 23);
+        stop.setBounds(65, 220, 89, 23);
         mainFrame.getContentPane().add(stop);
 
         JTextArea log = new JTextArea(30,30);
@@ -68,7 +78,7 @@ public class ShowListener {
 
         mainFrame.getContentPane().add(scroll);
         
-        start.addActionListener(new StartListener(field1, field2, field3, controller));
+        start.addActionListener(new StartListener(field1, field2, field3,result, controller));
         stop.addActionListener(new StopListener(controller));
 
         mainFrame.setVisible(true);

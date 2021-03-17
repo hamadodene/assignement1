@@ -9,6 +9,10 @@ import com.ass1.assignment1.exception.IncorrectFileException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Hamado Dene
+ * Gui controller
+ */
 public class GuiController {
 
     private OccurrencesImpl occurrences;
@@ -18,25 +22,37 @@ public class GuiController {
     public GuiController() {
         occurrences = new OccurrencesImpl();
         monitor = Monitor._instance(occurrences);
-        workers = new ArrayList<Worker>();
-        monitor.init();
     }
 
+    /**
+     * Initialize Gui
+     */
     public void init() {
         new ShowListener().prepareGui(this);
     }
 
+    /**
+     * Start files parsing and log result
+     */
     public void begin() {
         long _start = System.currentTimeMillis();
+        workers = new ArrayList<Worker>();
+        monitor.flushOccurrences();
+        monitor.resetIndex();
+        monitor.init();
+
         int THREADS = monitor.getWorkers();
+
         if(THREADS > monitor.getNumberOfFiles()) {
             THREADS = monitor.getNumberOfFiles();
         }
+        System.out.println("THREAD " +THREADS);
         for(int i = 0; i <  THREADS; i++) {
             workers.add(new Worker("Worker-" + i, monitor));
         }
+        System.out.println("Workers " + workers.toString());
         for (Worker worker : workers) {
-            worker.run();
+            worker.start();
         }
         for (Worker worker: workers) {
             try {
@@ -51,20 +67,41 @@ public class GuiController {
         System.out.println("All work terminated in " + _result + " ms");
     }
 
+    /**
+     * Set stop
+     */
     public void stop() {
         monitor.forceStop(true);
     }
 
+    /**
+     * Set start
+     */
     public void start() {
         monitor.setStarted(true);
     }
 
+    /**
+     *
+     * @param path
+     * @throws IncorrectDirectoryException
+     * Initialize pdf files absolute path
+     */
     public void initializePdfFiles(String path) throws IncorrectDirectoryException {
         monitor.initializePdfFiles(path);
     }
 
+    /**
+     *
+     * @param file
+     * @throws IncorrectFileException
+     * Initialize words to exclude
+     */
     public void initializeExclusionWords(String file) throws IncorrectFileException {
         monitor.initializeExclusionWords(file);
     }
 
+    public  String printResult(int n) {
+        return monitor.getOccurrences(n).toString();
+    }
 }

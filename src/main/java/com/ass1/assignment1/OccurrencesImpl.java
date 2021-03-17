@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 /**
  *
  * @author Hamado Dene
+ * Object of map
  */
 public final class OccurrencesImpl implements Occurrences {
     
@@ -21,7 +22,13 @@ public final class OccurrencesImpl implements Occurrences {
     public OccurrencesImpl() {
         words = new HashMap<>();
     }
-
+    /**
+     *
+     * @param word
+     * @return number of words processed
+     *
+     * Update/Add occurrence into Map
+     */
     @Override
     public int  addOccurrence(String word) {
         if(words.containsKey(word)){
@@ -51,7 +58,12 @@ public final class OccurrencesImpl implements Occurrences {
                .limit(n)
                .collect(Collectors.toMap(Entry::getKey, Entry::getValue));        
     }
-    
+
+    /**
+     *
+     * @param wordCounts
+     * @return an ordered map
+     */
     private  static Map<String, Integer> sortByValue(final Map<String, Integer> wordCounts) {
         return wordCounts.entrySet()
                 .stream()
@@ -64,7 +76,8 @@ public final class OccurrencesImpl implements Occurrences {
         return words;
     }
 
-    public void flushOccurences() {
+    //flush words Map
+    public void flushOccurrences() {
         words.clear();
     }
 }

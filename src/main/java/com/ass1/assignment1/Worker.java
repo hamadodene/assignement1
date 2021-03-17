@@ -12,14 +12,13 @@ import org.apache.pdfbox.text.PDFTextStripper;
 
 /**
  * @author Hamado Dene
+ * Worker class
  */
 public class Worker extends Thread {
 
     private PDDocument document;
     private final Monitor monitor;
-    private static final Logger LOG = Logger.getLogger(Worker.class.getName());
     private int numberOfRecordProcessed = 0;
-    boolean verbose = Boolean.getBoolean("debug");
 
     public Worker(final String name, Monitor monitor) {
         super(name);
@@ -31,12 +30,9 @@ public class Worker extends Thread {
         while (monitor.existNextFile()) {
             try {
                 long _start = System.currentTimeMillis();
-                File file = getFile();
+                File file = monitor.getNextFile();
                 if (file != null) {
-                    if(verbose) {
-                        LOG.log(Level.FINE, "{0} Parsing pdf {1}", new Object[]{this.getName(), file.getName()});
-                    }
-                    System.out.println("Parsing pdf " + file.getName());
+                    System.out.println(this.getName() + ": " + "Parsing pdf " + file.getName());
                     //Parse pdf
                     parsePdf(file);
                     long _stop = System.currentTimeMillis();
@@ -44,21 +40,30 @@ public class Worker extends Thread {
                     System.out.println("Processed actually " + numberOfRecordProcessed + " words in "  + t + "ms");
                 }
             } catch (InterruptedException | ForcedStopException ex) {
-                this.interrupt();
+                System.out.println("Something went wrong, please retry");
+                ex.printStackTrace();
             }
         }
     }
 
+    /**
+     *
+     * @param file
+     * @throws InterruptedException
+     *
+     * Parse pdf
+     */
     private void parsePdf(File file) throws InterruptedException {
         try {
             document = PDDocument.load(file);
             PDFTextStripper stripper = new PDFTextStripper();
             String pdfFIleInText = stripper.getText(document);
-            String words[] = pdfFIleInText.split("\\r?\\n");
+            String words[] = pdfFIleInText.split("\\W+");
             List<String> exclusion = monitor.wordsToExclude();
 
             for (String word : words) {
                 if(!exclusion.contains(word)) {
+                    //update occurrence
                     numberOfRecordProcessed = monitor.updateOccurrence(word);
                 } else {
                     System.out.println("Exclude word " + word);
@@ -69,9 +74,4 @@ public class Worker extends Thread {
             System.out.println("Something went wrong, please check " + ex);
         }
     }
-
-    private File getFile() throws ForcedStopException, InterruptedException {
-        return monitor.getNextFile();
-    }
-
 }

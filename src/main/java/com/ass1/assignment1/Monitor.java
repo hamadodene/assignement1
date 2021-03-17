@@ -6,10 +6,12 @@ import com.ass1.assignment1.exception.IncorrectFileException;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
  * @author Hamado Dene
+ * Monitor class
  */
 public class Monitor {
 
@@ -42,7 +44,15 @@ public class Monitor {
         }
     }
 
-    //Update word occurrence
+    /**
+     *
+     * @param word
+     * @return number of words processed
+     * @throws ForcedStopException
+     * @throws InterruptedException
+     *
+     * Update word occurrence in the map
+     */
     public synchronized int updateOccurrence(String word) throws ForcedStopException, InterruptedException {
         while (!started) {
             wait();
@@ -55,6 +65,11 @@ public class Monitor {
         return result;
     }
 
+    /**
+     *
+     * @return the file to be assigned to the thread
+     *
+     */
     public synchronized File getNextFile() throws InterruptedException, ForcedStopException {
         while (!started) {
             wait();
@@ -66,22 +81,45 @@ public class Monitor {
         return filesProcessor.getNextFile();
     }
 
+    /**
+     *
+     * @return true if there is a least one file to process
+     */
     public boolean existNextFile() {
         return filesProcessor.existNextFile();
     }
+
+    /**
+     *
+     * @return list of words to exclude
+     */
 
     public List<String> wordsToExclude() {
         return filesProcessor.getWordsToExclude();
     }
 
+    /**
+     *
+     * @param forceStop
+     * Force stop to all threads
+     */
     public void forceStop(boolean forceStop) {
         this.forceStop = forceStop;
     }
 
+    /**
+     *
+     * @param started
+     * Set start
+     */
     public void setStarted(boolean started) {
         this.started = started;
     }
 
+    /**
+     *
+     * @return number of threads
+     */
     public int getWorkers() {
         return THREADS;
     }
@@ -103,6 +141,18 @@ public class Monitor {
     }
 
     public void flushOccurrences() {
-        occurrences.flushOccurences();
+        occurrences.flushOccurrences();
+    }
+    /**
+     *
+     * @param n
+     * @return occurrences
+     */
+    public Map<String, Integer> getOccurrences(int n) {
+        return occurrences.getOccurrences(n);
+    }
+
+    public void resetIndex() {
+        filesProcessor.resetNextFile();
     }
 }
