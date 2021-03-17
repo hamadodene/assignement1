@@ -69,7 +69,7 @@ public class ShowListener {
         mainFrame.getContentPane().add(scroll);
         
         start.addActionListener(new StartListener(field1, field2, field3, controller));
-        stop.addActionListener(new StopListener());
+        stop.addActionListener(new StopListener(controller));
 
         mainFrame.setVisible(true);
     }

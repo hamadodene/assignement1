@@ -2,7 +2,7 @@ package com.ass1.assignment1.ui;
 
 import com.ass1.assignment1.Monitor;
 import com.ass1.assignment1.OccurrencesImpl;
-import com.ass1.assignment1.WorkerImpl;
+import com.ass1.assignment1.Worker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +11,12 @@ public class GuiController {
 
     private OccurrencesImpl occurrences;
     private Monitor monitor;
-    private List<WorkerImpl> workers;
+    private List<Worker> workers;
 
     public GuiController() {
         occurrences = new OccurrencesImpl();
         monitor = new Monitor(occurrences);
-        workers = new ArrayList<WorkerImpl>();
+        workers = new ArrayList<Worker>();
         monitor.init();
     }
 
@@ -31,12 +31,12 @@ public class GuiController {
             THREADS = monitor.getNumberOfFiles();
         }
         for(int i = 0; i <  THREADS; i++) {
-            workers.add(new WorkerImpl("Worker-" + i, monitor));
+            workers.add(new Worker("Worker-" + i, monitor));
         }
-        for (WorkerImpl worker : workers) {
+        for (Worker worker : workers) {
             worker.run();
         }
-        for (WorkerImpl worker: workers) {
+        for (Worker worker: workers) {
             try {
                 worker.join();
             }catch (InterruptedException ex) {
@@ -50,6 +50,7 @@ public class GuiController {
     }
 
     public void stop() {
+        System.out.println("Call stop 1");
         monitor.forceStop(true);
     }
 

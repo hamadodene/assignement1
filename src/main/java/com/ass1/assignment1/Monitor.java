@@ -32,7 +32,6 @@ public class Monitor {
         } else {
             THREADS = Runtime.getRuntime().availableProcessors();
         }
-        System.out.println("Threads " + THREADS);
     }
 
     //Update word occurrence
@@ -50,7 +49,6 @@ public class Monitor {
 
     public synchronized File getNextFile() throws InterruptedException, ForcedStopException {
         while (!started) {
-            System.out.println("Waiting");
             wait();
             if(forceStop) {
                 throw new ForcedStopException();
@@ -69,7 +67,9 @@ public class Monitor {
     }
 
     public void forceStop(boolean forceStop) {
+        System.out.println("Call stop 1");
         this.forceStop = forceStop;
+        //Maybe check if there are active threads
         notifyAll();
     }
 

@@ -13,15 +13,15 @@ import org.apache.pdfbox.text.PDFTextStripper;
 /**
  * @author Hamado Dene
  */
-public class WorkerImpl extends Thread {
+public class Worker extends Thread {
 
     private PDDocument document;
     private final Monitor monitor;
-    private static final Logger LOG = Logger.getLogger(WorkerImpl.class.getName());
+    private static final Logger LOG = Logger.getLogger(Worker.class.getName());
     private int numberOfRecordProcessed = 0;
     boolean verbose = Boolean.getBoolean("debug");
 
-    public WorkerImpl(final String name, Monitor monitor) {
+    public Worker(final String name, Monitor monitor) {
         super(name);
         this.monitor = monitor;
     }

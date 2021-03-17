@@ -6,10 +6,14 @@ import java.awt.event.ActionListener;
 
 public class StopListener implements ActionListener {
 
-    public StopListener() {
+    private GuiController controller;
 
+    public StopListener(GuiController controller) {
+        this.controller = controller;
     }
     @Override
     public void actionPerformed(ActionEvent e) {
+        //Send stop to worker
+        controller.stop();
     }
 }
