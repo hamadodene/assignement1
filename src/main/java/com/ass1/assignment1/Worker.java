@@ -13,15 +13,14 @@ import org.apache.pdfbox.text.PDFTextStripper;
 /**
  * @author Hamado Dene
  */
-public class WorkerImp extends Thread {
+public class Worker extends Thread {
 
     private PDDocument document;
     private final Monitor monitor;
-    static final Logger LOG = Logger.getLogger(WorkerImp.class.getName());
     private int numberOfRecordProcessed = 0;
-    boolean verbose = Boolean.getBoolean("debug");
+    private boolean verbose = Boolean.getBoolean("debug");
 
-    public WorkerImp(final String name, Monitor monitor) {
+    public Worker(final String name, Monitor monitor) {
         super(name);
         this.monitor = monitor;
     }
@@ -31,29 +30,22 @@ public class WorkerImp extends Thread {
         while (monitor.existNextFile()) {
             try {
                 long _start = System.currentTimeMillis();
-                File file = getFile();
+                File file = monitor.getNextFile();
                 if (file != null) {
-                    if(verbose) {
-                        LOG.log(Level.FINE, "{0} Parsing pdf {1}", new Object[]{this.getName(), file.getName()});
-                    }
-                    LOG.log(Level.INFO, "parsing pdf " + file.getName());
+                    System.out.println(this.getName() + ": " + "Parsing pdf " + file.getName());
                     //Parse pdf
                     parsePdf(file);
                     long _stop = System.currentTimeMillis();
                     long t = _stop - _start;
-                    if(verbose) {
-                        LOG.log(Level.FINE, "Processed pdf {0} in {1} ms", new Object[]{file.getName(), t});
-                        LOG.log(Level.FINE, "Processed actually {0} words", numberOfRecordProcessed);
-                    }
+                    System.out.println("Parse pdf " + file.getName() + " in " + t + " ms");
+                    System.out.println(this.getName() + " processed actually " + numberOfRecordProcessed + " words");
                 }
             } catch (InterruptedException ex) {
-                LOG.log(Level.SEVERE, "{1} - Says: something went wrong {0}", new Object[]{this.getName(), ex});
-                this.interrupt();
+                System.out.println("Something went wrong, please retry");
+                ex.printStackTrace();
             }
         }
-        if(verbose) {
-            LOG.log(Level.FINE, "{0} - Says: Nothing to do now, i go sleep", this.getName());
-        }
+        System.out.println(this.getName() +": " + "Nothing to do, i go sleep");
     }
 
     private void parsePdf(File file) throws InterruptedException {
@@ -61,27 +53,20 @@ public class WorkerImp extends Thread {
             document = PDDocument.load(file);
             PDFTextStripper stripper = new PDFTextStripper();
             String pdfFIleInText = stripper.getText(document);
-            String words[] = pdfFIleInText.split("\\r?\\n");
+            String words[] = pdfFIleInText.split("\\W+");
             List<String> exclusion = monitor.wordsToExclude();
 
             for (String word : words) {
                 if(!exclusion.contains(word)) {
+                    //update occurrences
                     numberOfRecordProcessed = monitor.updateOccurrence(word);
-                } else {
-                    if(verbose) {
-                        LOG.log(Level.FINE, "Exclude word {0} " , word);
-                    }
-                    // LOG.log(Level.INFO, "Exclude word {0} " + word);
+                } else if(verbose){
+                    System.out.println(this.getName() +": " + "Exclude word " + word);
                 }
             }
             document.close();
         } catch (IOException | ForcedStopException ex) {
-            LOG.log(Level.SEVERE, "{1} - Says: something went wrong {0}", new Object[]{this.getName(), ex});
+            System.out.println( this.getName() + ": " + "Something went wrong, please check " + ex);
         }
     }
-
-    private File getFile() {
-        return monitor.getNextFile();
-    }
-
 }

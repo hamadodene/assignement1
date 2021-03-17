@@ -63,4 +63,9 @@ public class OccurrencesImpl implements Occurrences {
     public Map<String,Integer> getAllWords() {
         return words;
     }
+
+    @Override
+    public void flushOccurrences() {
+        words.clear();
+    }
 }

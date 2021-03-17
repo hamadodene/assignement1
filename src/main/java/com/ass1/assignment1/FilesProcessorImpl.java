@@ -19,38 +19,17 @@ import java.util.logging.Logger;
  */
 public final class FilesProcessorImpl implements FileProcessor {
 
-    static final Logger LOG = Logger.getLogger(FilesProcessorImpl.class.getName());
     private static final ArrayList<String> pdfFilesAbsolutePath = new ArrayList<String>();
     private static List<String> wordsToExclude = new ArrayList<String>();
-    private final String directory;
-    private final String file;
-    private int numberOfFile = 0;
     private static int nextFile = -1;
-    private static int THREADS;
 
-    public FilesProcessorImpl(String directory, String file) {
-        this.directory = directory;
-        this.file = file;
+    public FilesProcessorImpl() {
     }
 
-    public void init() throws IncorrectDirectoryException, IncorrectFileException {
-        if (Runtime.getRuntime().availableProcessors() < 3) {
-            THREADS = 3;
-        } else {
-            THREADS = Runtime.getRuntime().availableProcessors();
-        }
-        initializePdfFiles(new File(directory));
-        if(file == null) {
-            LOG.log(Level.INFO, "Exclusion file does not specified, Proceed without exclusions");
-        } else {
-            initializeWordsToExclude(new File(file));
-        }
-        if (THREADS > pdfFilesAbsolutePath.size()) {
-            THREADS = pdfFilesAbsolutePath.size();
-        }
-    }
+    @Override
+    public void initializePdfFiles(final String path) throws IncorrectDirectoryException {
+        File folder = new File(path);
 
-    private void initializePdfFiles(final File folder) throws IncorrectDirectoryException {
         String tempFileName = "";
         if (!folder.exists() || !folder.isDirectory()) {
             throw new IncorrectDirectoryException("Wrong folder pass, please correct");
@@ -59,20 +38,22 @@ public final class FilesProcessorImpl implements FileProcessor {
             if (entry.isFile()) {
                 String extension = getExtensionByStringHandling(entry.getName());
                 if (!"pdf".equals(extension)) {
-                    LOG.log(Level.INFO, "Skipping file {0} because not a pdf files", entry.getName());
+                    System.out.println("Skipping file " + entry.getName() + " becanse not a pdf files");
                 } else {
                     tempFileName = entry.getAbsolutePath();
                     pdfFilesAbsolutePath.add(tempFileName);
                 }
             } else {
-                LOG.log(Level.INFO, "Skipping directory {0}", entry.getAbsolutePath());
+                System.out.println("Skipping directory " + entry.getAbsolutePath());
             }
         }
-        numberOfFile = pdfFilesAbsolutePath.size();
     }
 
-    private void initializeWordsToExclude (final File file) throws IncorrectFileException {
-        if(!file.isFile() || !file.exists()) {
+    @Override
+    public void initializeWordsToExclude (final String exclusionFile) throws IncorrectFileException {
+        File file = new File(exclusionFile);
+
+        if(!file.isFile() || !file.exists() || file == null) {
             throw new IncorrectFileException("File not correct, please check");
         }
         boolean format = false;
@@ -87,7 +68,7 @@ public final class FilesProcessorImpl implements FileProcessor {
                 }
             }
         } catch (IOException e) {
-            LOG.log(Level.SEVERE, "Something went wrong, please check {0}", e);
+            System.out.println("Something went wrong, please check " + e );
         }
     }
 
@@ -110,24 +91,20 @@ public final class FilesProcessorImpl implements FileProcessor {
     }
 
     @Override
-    public int getNumberOfFile() {
-        return this.numberOfFile;
-    }
-
-    @Override
     public boolean existNextFile() {
         if (nextFile < pdfFilesAbsolutePath.size()) {
             return true;
         }
         return false;
     }
-    @Override
-    public int getWorkers() {
-        return THREADS;
-    }
 
     @Override
     public List<String> getWordsToExclude() {
         return wordsToExclude;
+    }
+
+    @Override
+    public int getFilesSize() {
+        return pdfFilesAbsolutePath.size();
     }
 }

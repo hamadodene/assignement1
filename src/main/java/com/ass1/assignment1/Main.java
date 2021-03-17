@@ -16,50 +16,39 @@ import java.util.logging.Logger;
 public class Main {
     static final Logger LOG = Logger.getLogger(Main.class.getName());
     public static void main(String[] args) throws IncorrectDirectoryException, IncorrectFileException {
+
         System.out.println("Starting program");
-        int n = 1;
-        /*
+
         String path = "src/main/resources";
         String file = "src/main/resources/exclude.txt";
         int n = 5;
-        */
+
 
         //Get info from command line
-        Scanner scanner = new Scanner(System.in);
+/*        Scanner scanner = new Scanner(System.in);
         LOG.log(Level.INFO, "Enter pdf files path");
         String path = scanner.nextLine();
         LOG.log(Level.INFO, "Enter exclusion files path");
         String file = scanner.nextLine();
         LOG.log(Level.INFO, "Enter number of occurrences you want print");
-        n = scanner.nextInt();
+        n = scanner.nextInt();*/
 
+        Monitor monitor = Monitor._instance(new OccurrencesImpl(), path, file);
+        monitor.init();
 
-        //Get input via JVM parameters
-        /*
-            String _path = System.getProperty("PDF.FILES.PATH");
-            String _esclutionFile = System.getProperty("WORD.EXCLUSION.FILE");
-            int n_occurences = Integer.getInteger("WORD.OCCURENCES");
-        */
+        List<Worker> workers = new ArrayList<Worker>();
 
-        int THREADS = 0;
-        FilesProcessorImpl process = new FilesProcessorImpl(path, file);
-        OccurrencesImpl occurrencesImpl = new OccurrencesImpl();
-        Monitor monitor = new Monitor(occurrencesImpl,process);
-        //Initialize
-        process.init();
-        List<WorkerImp> workers = new ArrayList<WorkerImp>();
-
-        for(int i = 0; i <process.getWorkers(); i++) {
-            workers.add(new WorkerImp("Worker-" + i, monitor));
+        for(int i = 0; i < monitor.getWorkers(); i++) {
+            workers.add(new Worker("Worker-" + i, monitor));
         }
 
         long _start = System.currentTimeMillis();
 
-        for (WorkerImp worker : workers) {
+        for (Worker worker : workers) {
             worker.start();
 
         }
-        for (WorkerImp worker: workers) {
+        for (Worker worker: workers) {
             try {
                 worker.join();
             }catch (InterruptedException ex) {
@@ -71,6 +60,6 @@ public class Main {
         long _stop = System.currentTimeMillis();
         long _result = _stop - _start;
         LOG.log(Level.INFO, "All worker are terminated in {0}  ms", _result );
-        LOG.log(Level.INFO, "result is: {0}", occurrencesImpl.getOccurrences(n));
+        LOG.log(Level.INFO, "result is: {0}", monitor.getOccurrences(n));
     }   
 }

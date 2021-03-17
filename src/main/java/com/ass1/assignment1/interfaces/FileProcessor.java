@@ -7,10 +7,11 @@ import java.io.File;
 import java.util.List;
 
 public interface FileProcessor {
+    public int getFilesSize();
     public File getNextFile();
-    public int getNumberOfFile();
     public boolean existNextFile();
-    public int getWorkers();
     public List<String> getWordsToExclude();
     public String getExtensionByStringHandling(String fileName);
+    public void initializePdfFiles(final String path) throws IncorrectDirectoryException;
+    public void initializeWordsToExclude (final String exclusionFile) throws IncorrectFileException;
 }
