@@ -40,8 +40,7 @@ public class Worker extends Thread {
                     System.out.println("Processed pdf " + file.getName() + " in " + t + " ms");
                 }
             } catch (InterruptedException ex) {
-                System.out.println("Something went wrong, please retry");
-                ex.printStackTrace();
+                System.out.println("Something went wrong: " + ex.getMessage());
             }
         }
         System.out.println(this.getName() +": " + "Nothing to do, i go sleep");
@@ -73,7 +72,7 @@ public class Worker extends Thread {
             }
             document.close();
         } catch (IOException ex) {
-            System.out.println( this.getName() + ": " + "Something went wrong, please check " + ex);
+            System.out.println( this.getName() + ": " + "Something went wrong, please check " + ex.getMessage());
         }
     }
 }
