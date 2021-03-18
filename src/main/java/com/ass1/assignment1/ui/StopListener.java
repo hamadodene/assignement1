@@ -17,7 +17,9 @@ public class StopListener implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        //Send stop to worker
-        controller.stop();
+        new Thread(() -> {
+            //Send stop to worker
+            controller.stop();
+        }).start();
     }
 }

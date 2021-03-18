@@ -43,28 +43,19 @@ public class ReadPdfTest {
                 cont.setFont(PDType1Font.TIMES_ROMAN, 12);
                 cont.setLeading(14.5f);
                 cont.newLineAtOffset(25, 700);
-                String line1 = "prova1 prova55";
+                String line1 = "prova1 prova55 Prova1";
                 cont.showText(line1);
 
-                cont.newLine();
-                String line2 = "prova2";
-                cont.showText(line2);
+                for(int i=0 ; i<5 ; i++) {
+                    cont.newLine();
+                    String line2 = "prova" +i;
+                    cont.showText(line2);
+                }
 
-                cont.newLine();
-                String line3 = "prova3";
-                cont.showText(line3);
-
-                cont.newLine();
-                String line4 = "prova4";
-                cont.showText(line4);
-
-                cont.newLine();
-                String line5 = "prova5";
-                cont.showText(line5);
                 cont.endText();
             }
             //doc.save("src/main/resources/prova.pdf");
-            for (int i = 0; i < 50; i++) {
+            for (int i = 0; i < 5; i++) {
                 doc.save("src/main/resources/prova" + i + ".pdf");
             }
         }

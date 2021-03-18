@@ -65,7 +65,7 @@ public class FilesProcessorImpl implements FileProcessor {
                 if(line.matches(".*([ \\t]).*")){
                     throw new IncorrectFileException("File " + file.getName() + "format not correct, please check");
                 } else {
-                    wordsToExclude.add(line);
+                    wordsToExclude.add(line.toLowerCase());
                     line = br.readLine();
                 }
             }
