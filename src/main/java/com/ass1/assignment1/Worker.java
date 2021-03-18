@@ -37,7 +37,7 @@ public class Worker extends Thread {
                     parsePdf(file);
                     long _stop = System.currentTimeMillis();
                     long t = _stop - _start;
-                    System.out.println("Processed actually " + numberOfRecordProcessed + " words");
+                    System.out.println("Processed pdf  " + file.getName() + " in " + t + " ms");
                 }
             } catch (InterruptedException | ForcedStopException ex) {
                 System.out.println("Something went wrong, please retry");
@@ -62,9 +62,11 @@ public class Worker extends Thread {
             List<String> exclusion = monitor.wordsToExclude();
 
             for (String word : words) {
+                System.out.println("Processing word " + word);
                 if(!exclusion.contains(word.toLowerCase())) {
                     //update occurrence
-                    numberOfRecordProcessed = monitor.updateOccurrence(word.toLowerCase());
+                    numberOfRecordProcessed = monitor.updateOccurrence(word.toLowerCase(), this.getName());
+                    System.out.println(this.getName() + ": Processed actually " + numberOfRecordProcessed + " words");
                 } else {
                     System.out.println("Exclude word " + word.toLowerCase());
                 }

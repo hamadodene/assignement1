@@ -20,6 +20,7 @@ public class Monitor {
     private boolean started;
     private boolean forceStop;
     private static  int THREADS;
+    private int n_occurrences;
 
     public Monitor(OccurrencesImpl occurrences) {
         this.occurrences = occurrences;
@@ -45,7 +46,7 @@ public class Monitor {
      *
      * Update word occurrence in the map
      */
-    public synchronized int updateOccurrence(String word) throws ForcedStopException, InterruptedException {
+    public synchronized int updateOccurrence(String word, String threadName) throws ForcedStopException, InterruptedException {
         while (!started) {
             wait();
             if(forceStop) {
@@ -53,6 +54,7 @@ public class Monitor {
             }
         }
         int result = occurrences.addOccurrence(word);
+        System.out.println(threadName + ": The " + n_occurrences+ " most frequent words actually is " + getOccurrences(n_occurrences));
         notifyAll();
         return result;
     }
@@ -144,4 +146,10 @@ public class Monitor {
     public void flush() {
         filesProcessor.flush();
     }
+
+    public void setN_occurrences(int n_occurrences) {
+        this.n_occurrences = n_occurrences;
+    }
+
+
 }

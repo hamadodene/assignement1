@@ -30,10 +30,11 @@ public class GuiController {
         new ShowListener().prepareGui(this);
     }
 
-    public void setup() {
+    public void setup(int n_occurrences) {
         occurrences = new OccurrencesImpl();
         monitor = new Monitor(occurrences);
         workers = new ArrayList<Worker>();
+        monitor.setN_occurrences(n_occurrences);
         monitor.init();
     }
 
