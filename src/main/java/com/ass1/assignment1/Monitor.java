@@ -23,12 +23,11 @@ public class Monitor {
     private final String path;
     private final String file;
     private static int THREADS;
-    private Lock mutex;
+    private int n_occurrences;
 
     public Monitor(OccurrencesImpl occurrences, String path, String file) {
         this.occurrences = occurrences;
         filesProcessor = new FilesProcessorImpl();
-        mutex = new ReentrantLock();
         this.path = path;
         this.file = file;
     }
@@ -73,8 +72,9 @@ public class Monitor {
      *
      * Update word occurrence in the map
      */
-    public synchronized int updateOccurrence(String word) throws ForcedStopException, InterruptedException {
+    public synchronized int updateOccurrence(String word, String threadName) throws InterruptedException {
         int result = occurrences.addOccurrence(word);
+        System.out.println(threadName + ": The " + n_occurrences+ " most frequent words actually are " + getOccurrences(n_occurrences));
         return result;
     }
 
@@ -135,10 +135,6 @@ public class Monitor {
         filesProcessor.initializeWordsToExclude(file);
     }
 
-    public void flushOccurrences() {
-        occurrences.flushOccurrences();
-    }
-
     /**
      *
      * @param n
@@ -146,5 +142,12 @@ public class Monitor {
      */
     public Map<String, Integer> getOccurrences(int n) {
         return occurrences.getOccurrences(n);
+    }
+
+    public int getTotalOfWordsProcessed() {
+        return occurrences.getNumberWordsProcessed();
+    }
+    public void setN_occurrences(int n_occurrences) {
+        this.n_occurrences = n_occurrences;
     }
 }

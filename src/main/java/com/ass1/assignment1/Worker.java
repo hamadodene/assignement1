@@ -37,8 +37,7 @@ public class Worker extends Thread {
                     parsePdf(file);
                     long _stop = System.currentTimeMillis();
                     long t = _stop - _start;
-                    System.out.println("Parse pdf " + file.getName() + " in " + t + " ms");
-                    System.out.println(this.getName() + " processed actually " + numberOfRecordProcessed + " words");
+                    System.out.println("Processed pdf " + file.getName() + " in " + t + " ms");
                 }
             } catch (InterruptedException ex) {
                 System.out.println("Something went wrong, please retry");
@@ -64,15 +63,16 @@ public class Worker extends Thread {
             List<String> exclusion = monitor.wordsToExclude();
 
             for (String word : words) {
-                if(!exclusion.contains(word)) {
+                if(!exclusion.contains(word.toLowerCase())) {
                     //update occurrences
-                    numberOfRecordProcessed = monitor.updateOccurrence(word);
-                } else if(verbose){
+                    numberOfRecordProcessed = monitor.updateOccurrence(word.toLowerCase(), this.getName());
+                    System.out.println(this.getName() + ": Processed actually " + numberOfRecordProcessed + " words");
+                } else {
                     System.out.println(this.getName() +": " + "Exclude word " + word);
                 }
             }
             document.close();
-        } catch (IOException | ForcedStopException ex) {
+        } catch (IOException ex) {
             System.out.println( this.getName() + ": " + "Something went wrong, please check " + ex);
         }
     }
