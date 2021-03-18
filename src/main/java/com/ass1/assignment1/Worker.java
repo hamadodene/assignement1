@@ -30,7 +30,7 @@ public class Worker extends Thread {
         while (monitor.existNextFile() && !running()) {
             try {
                 long _start = System.currentTimeMillis();
-                File file = monitor.getNextFile();
+                File file = monitor.getNextFile(this.getName());
                 if (file != null) {
                     System.out.println(this.getName() + ": " + "Parsing pdf " + file.getName());
                     //Parse pdf

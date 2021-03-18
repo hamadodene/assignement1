@@ -50,7 +50,7 @@ public class Monitor {
         while (!started) {
             wait();
             if(forceStop) {
-                throw new ForcedStopException("Force Stop thread");
+                throw new ForcedStopException("Force Stop thread " + threadName);
             }
         }
         int result = occurrences.addOccurrence(word);
@@ -64,11 +64,11 @@ public class Monitor {
      * @return the file to be assigned to the thread
      *
      */
-    public synchronized File getNextFile() throws InterruptedException, ForcedStopException {
+    public synchronized File getNextFile(String threadName) throws InterruptedException, ForcedStopException {
         while (!started) {
             wait();
             if(forceStop) {
-                throw new ForcedStopException("Force Stop thread");
+                throw new ForcedStopException("Force Stop thread " + threadName);
             }
         }
         notifyAll();
