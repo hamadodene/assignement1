@@ -57,6 +57,7 @@ public class StartListener implements ActionListener {
         }
 
         new Thread(() -> {
+            controller.setup();
             try {
                 //Initialize pdf files
                 controller.initializePdfFiles(path);

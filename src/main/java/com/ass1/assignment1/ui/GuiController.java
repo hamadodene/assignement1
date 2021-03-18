@@ -20,8 +20,7 @@ public class GuiController {
     private List<Worker> workers;
 
     public GuiController() {
-        occurrences = new OccurrencesImpl();
-        monitor = Monitor._instance(occurrences);
+
     }
 
     /**
@@ -31,22 +30,24 @@ public class GuiController {
         new ShowListener().prepareGui(this);
     }
 
+    public void setup() {
+        occurrences = new OccurrencesImpl();
+        monitor = new Monitor(occurrences);
+        workers = new ArrayList<Worker>();
+        monitor.init();
+    }
+
     /**
      * Start files parsing and log result
      */
     public void begin() {
         long _start = System.currentTimeMillis();
-        workers = new ArrayList<Worker>();
-        monitor.flushOccurrences();
-        monitor.resetIndex();
-        monitor.init();
-
         int THREADS = monitor.getWorkers();
 
         if(THREADS > monitor.getNumberOfFiles()) {
             THREADS = monitor.getNumberOfFiles();
         }
-        System.out.println("THREAD " +THREADS);
+
         for(int i = 0; i <  THREADS; i++) {
             workers.add(new Worker("Worker-" + i, monitor));
         }
@@ -65,6 +66,7 @@ public class GuiController {
         long _stop = System.currentTimeMillis();
         long _result = _stop - _start;
         System.out.println("All work terminated in " + _result + " ms");
+        monitor.flush();
     }
 
     /**

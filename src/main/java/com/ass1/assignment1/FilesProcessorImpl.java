@@ -119,6 +119,18 @@ public class FilesProcessorImpl implements FileProcessor {
     }
 
     public void resetNextFile() {
+        if(nextFile != -1) {
+            nextFile = -1;
+        }
+    }
+
+    public void flush(){
+        if(pdfFilesAbsolutePath.size() > 0 ) {
+            pdfFilesAbsolutePath.clear();
+        }
+        if(wordsToExclude.size() > 0 ) {
+            wordsToExclude.clear();
+        }
         nextFile = -1;
     }
 }

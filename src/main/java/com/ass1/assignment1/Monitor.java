@@ -17,7 +17,6 @@ public class Monitor {
 
     private final OccurrencesImpl occurrences;
     private final FilesProcessorImpl filesProcessor;
-    private static Monitor _instance = null;
     private boolean started;
     private boolean forceStop;
     private static  int THREADS;
@@ -27,13 +26,6 @@ public class Monitor {
         filesProcessor = new FilesProcessorImpl();
         this.started = false;
         this.forceStop = false;
-    }
-
-    public static Monitor _instance(OccurrencesImpl occurrences){
-        if (_instance == null) {
-            _instance = new Monitor(occurrences);
-        }
-        return _instance;
     }
 
     public void init() {
@@ -140,9 +132,6 @@ public class Monitor {
         filesProcessor.initializeWordsToExclude(file);
     }
 
-    public void flushOccurrences() {
-        occurrences.flushOccurrences();
-    }
     /**
      *
      * @param n
@@ -152,7 +141,7 @@ public class Monitor {
         return occurrences.getOccurrences(n);
     }
 
-    public void resetIndex() {
-        filesProcessor.resetNextFile();
+    public void flush() {
+        filesProcessor.flush();
     }
 }

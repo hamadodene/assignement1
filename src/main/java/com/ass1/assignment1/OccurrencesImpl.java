@@ -77,7 +77,7 @@ public final class OccurrencesImpl implements Occurrences {
     }
 
     //flush words Map
-    public void flushOccurrences() {
+    public void flush() {
         words.clear();
     }
 }
