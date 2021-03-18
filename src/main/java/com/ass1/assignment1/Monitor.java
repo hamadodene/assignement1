@@ -54,7 +54,7 @@ public class Monitor {
             }
         }
         int result = occurrences.addOccurrence(word);
-        System.out.println(threadName + ": The " + n_occurrences+ " most frequent words actually is " + getOccurrences(n_occurrences));
+        System.out.println(threadName + ": The " + n_occurrences+ " most frequent words actually are " + getOccurrences(n_occurrences));
         notifyAll();
         return result;
     }
