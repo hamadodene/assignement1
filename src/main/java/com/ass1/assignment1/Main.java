@@ -25,7 +25,7 @@ public class Main {
 
     public static void main(String[] args) throws IncorrectDirectoryException, IncorrectFileException {
 
-        System.out.println("Starting program");
+        System.out.println("PCD Assignment #01");
         /**
          * Get pdf path from command line
          * Retry if input is not a directory
