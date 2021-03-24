@@ -104,7 +104,7 @@ public class GuiController {
         monitor.initializeExclusionWords(file);
     }
 
-    public  String printResult(int n) {
-        return monitor.getOccurrences(n).toString();
+    public  String printResult() {
+        return monitor.getOccurrences().toString();
     }
 }

@@ -2,9 +2,8 @@ package com.ass1.assignment1;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import com.ass1.assignment1.exception.ForcedStopException;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -19,10 +18,13 @@ public class Worker extends Thread {
     private PDDocument document;
     private final Monitor monitor;
     private int numberOfRecordProcessed = 0;
+    private Map<String,Integer> occurrences;
+    private final int DEFAULT_WORD_COUNT = 1;
 
     public Worker(final String name, Monitor monitor) {
         super(name);
         this.monitor = monitor;
+        occurrences = new HashMap<>();
     }
 
     @Override
@@ -41,6 +43,14 @@ public class Worker extends Thread {
                 }
             } catch (InterruptedException | ForcedStopException ex) {
                 System.out.println("Something went wrong: " + ex.getMessage());
+            }
+        }
+        if(!occurrences.isEmpty()) {
+            //Update global Map
+            try {
+                monitor.updateGlobalOccurrences(occurrences, this.getName());
+            } catch (ForcedStopException | InterruptedException ex) {
+                System.out.println(this.getName() + ": Something went wrong " + ex);
             }
         }
     }
@@ -64,19 +74,49 @@ public class Worker extends Thread {
                 System.out.println("Processing word " + word);
                 if(!exclusion.contains(word.toLowerCase())) {
                     //update occurrence
-                    numberOfRecordProcessed = monitor.updateOccurrence(word.toLowerCase(), this.getName());
+                    addOccurrences(word);
                     System.out.println(this.getName() + ": Processed actually " + numberOfRecordProcessed + " words");
+                    System.out.println(this.getName() + ": The " + monitor.getN_occurrences() + " most frequent words actually for me are: " + getOccurrences(monitor.getN_occurrences()));
                 } else {
                     System.out.println("Exclude word " + word.toLowerCase());
                 }
             }
             document.close();
-        } catch (IOException | ForcedStopException ex) {
+        } catch (IOException ex) {
             System.out.println("Something went wrong, please check " + ex.getMessage());
+        }
+    }
+
+    public void addOccurrences(String word) {
+        if(occurrences.containsKey(word)){
+            int value = occurrences.get(word);
+            occurrences.put(word, value + 1);
+        } else {
+            occurrences.put(word, DEFAULT_WORD_COUNT);
+            numberOfRecordProcessed++;
         }
     }
 
     public boolean running() {
        return monitor.getStop();
+    }
+
+    public Map<String, Integer> getOccurrences(int n) {
+        if(occurrences.isEmpty()) {
+            return null;
+        }
+        //Sorted map from value
+        final Map<String, Integer> sortedByValue = sortByValue(occurrences);
+
+        return sortedByValue.entrySet().stream()
+                .limit(n)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    private  static Map<String, Integer> sortByValue(final Map<String, Integer> wordCounts) {
+        return wordCounts.entrySet()
+                .stream()
+                .sorted((Map.Entry.<String, Integer>comparingByValue().reversed()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
     }
 }

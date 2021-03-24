@@ -74,7 +74,7 @@ public class StartListener implements ActionListener {
             controller.start();
             //Send work
             controller.begin();
-            result.setText(controller.printResult(n));
+            result.setText(controller.printResult());
         }).start();
     }
 

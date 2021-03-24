@@ -39,24 +39,22 @@ public class Monitor {
 
     /**
      *
-     * @param word
-     * @return number of words processed
      * @throws ForcedStopException
      * @throws InterruptedException
      *
      * Update word occurrence in the map
      */
-    public synchronized int updateOccurrence(String word, String threadName) throws ForcedStopException, InterruptedException {
+    public synchronized void updateGlobalOccurrences(Map<String, Integer> words , String threadName) throws ForcedStopException, InterruptedException {
         while (!started) {
             wait();
             if(forceStop) {
                 throw new ForcedStopException("Force Stop thread " + threadName);
             }
         }
-        int result = occurrences.addOccurrence(word);
-        System.out.println(threadName + ": The " + n_occurrences+ " most frequent words actually are " + getOccurrences(n_occurrences));
+        for (Map.Entry<String, Integer> word : words.entrySet()) {
+            occurrences.addOccurrence(word.getKey(),word.getValue());
+        }
         notifyAll();
-        return result;
     }
 
     /**
@@ -139,8 +137,8 @@ public class Monitor {
      * @param n
      * @return occurrences
      */
-    public Map<String, Integer> getOccurrences(int n) {
-        return occurrences.getOccurrences(n);
+    public Map<String, Integer> getOccurrences() {
+        return occurrences.getOccurrences(n_occurrences);
     }
 
     public void flush() {
@@ -150,6 +148,7 @@ public class Monitor {
     public void setN_occurrences(int n_occurrences) {
         this.n_occurrences = n_occurrences;
     }
-
-
+    public int getN_occurrences(){
+        return this.n_occurrences;
+    }
 }
