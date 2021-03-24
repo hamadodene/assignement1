@@ -20,10 +20,8 @@ public class Worker extends Thread {
     private PDDocument document;
     private final Monitor monitor;
     private int numberOfRecordProcessed = 0;
-    private boolean verbose = Boolean.getBoolean("debug");
     private Map<String,Integer> occurrences;
     private final int DEFAULT_WORD_COUNT = 1;
-    private int NumberOfRecordProcessed = 0;
 
     public Worker(final String name, Monitor monitor) {
         super(name);
@@ -43,10 +41,10 @@ public class Worker extends Thread {
                     parsePdf(file);
                     long _stop = System.currentTimeMillis();
                     long t = _stop - _start;
-                    System.out.println("Processed pdf " + file.getName() + " in " + t + " ms");
+                    System.out.println(this.getName() + ": Processed pdf " + file.getName() + " in " + t + " ms");
                 }
             } catch (InterruptedException ex) {
-                System.out.println("Something went wrong: " + ex.getMessage());
+                System.out.println(this.getName() + ": Something went wrong: " + ex.getMessage());
             }
         }
         if(!occurrences.isEmpty()) {
