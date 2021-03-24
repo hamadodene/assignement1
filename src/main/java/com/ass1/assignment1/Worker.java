@@ -39,10 +39,10 @@ public class Worker extends Thread {
                     parsePdf(file);
                     long _stop = System.currentTimeMillis();
                     long t = _stop - _start;
-                    System.out.println("Processed pdf  " + file.getName() + " in " + t + " ms");
+                    System.out.println(this.getName() + ":Processed pdf  " + file.getName() + " in " + t + " ms");
                 }
             } catch (InterruptedException | ForcedStopException ex) {
-                System.out.println("Something went wrong: " + ex.getMessage());
+                System.out.println(this.getName() + ": Something went wrong: " + ex.getMessage());
             }
         }
         if(!occurrences.isEmpty()) {
@@ -83,7 +83,7 @@ public class Worker extends Thread {
             }
             document.close();
         } catch (IOException ex) {
-            System.out.println("Something went wrong, please check " + ex.getMessage());
+            System.out.println(this.getName() + ": Something went wrong, please check " + ex.getMessage());
         }
     }
 
