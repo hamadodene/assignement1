@@ -2,7 +2,9 @@ package com.ass1.assignment1;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,10 +21,14 @@ public class Worker extends Thread {
     private final Monitor monitor;
     private int numberOfRecordProcessed = 0;
     private boolean verbose = Boolean.getBoolean("debug");
+    private Map<String,Integer> occurrences;
+    private final int DEFAULT_WORD_COUNT = 1;
+    private int NumberOfRecordProcessed = 0;
 
     public Worker(final String name, Monitor monitor) {
         super(name);
         this.monitor = monitor;
+        occurrences = new HashMap<>();
     }
 
     @Override
@@ -42,6 +48,10 @@ public class Worker extends Thread {
             } catch (InterruptedException ex) {
                 System.out.println("Something went wrong: " + ex.getMessage());
             }
+        }
+        if(!occurrences.isEmpty()) {
+            //Update global Map
+            monitor.updateOccurrence(occurrences, this.getName());
         }
         System.out.println(this.getName() +": " + "Nothing to do, i go sleep");
     }
@@ -63,9 +73,8 @@ public class Worker extends Thread {
 
             for (String word : words) {
                 if(!exclusion.contains(word.toLowerCase())) {
-                    //update occurrences
-                    numberOfRecordProcessed = monitor.updateOccurrence(word.toLowerCase(), this.getName());
-                    System.out.println(this.getName() + ": Processed actually " + numberOfRecordProcessed + " words");
+                    addOccurrences(word);
+                    System.out.println(this.getName() + ": Processed actually " + numberOfRecordProcessed + " words " + "occurrences " +occurrences.size());
                 } else {
                     System.out.println(this.getName() +": " + "Exclude word " + word);
                 }
@@ -73,6 +82,16 @@ public class Worker extends Thread {
             document.close();
         } catch (IOException ex) {
             System.out.println( this.getName() + ": " + "Something went wrong, please check " + ex.getMessage());
+        }
+    }
+
+    public void addOccurrences(String word) {
+        if(occurrences.containsKey(word)){
+            int value = occurrences.get(word);
+            occurrences.put(word, value + 1);
+        } else {
+            occurrences.put(word, DEFAULT_WORD_COUNT);
+            numberOfRecordProcessed++;
         }
     }
 }

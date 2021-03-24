@@ -35,7 +35,6 @@ public class Main {
             LOG.log(Level.INFO, "Enter pdf files path");
             try {
                 path = scanner.nextLine();
-                System.out.println(path);
                 if (path.isEmpty() || !new File(path).isDirectory()) {
                     throw new Exception();
                 }

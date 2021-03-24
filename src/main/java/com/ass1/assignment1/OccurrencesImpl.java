@@ -30,20 +30,19 @@ public class OccurrencesImpl implements Occurrences {
      * Update/Add occurrence into Map
      */
     @Override
-    public int  addOccurrence(String word) {
+    public void addOccurrence(String word, int n_occurrences) {
         if(words.containsKey(word)){
             int value = words.get(word);
-            words.put(word, value + 1);
+            int newValue = value + n_occurrences;
+            words.put(word, newValue);
         } else {
-            words.put(word, DEFAULT_WORD_COUNT);
-            numberOfWordProcessed++;
+            words.put(word, n_occurrences);
         }
-        return numberOfWordProcessed;
     }
 
     @Override
     public int getNumberWordsProcessed() {
-        return numberOfWordProcessed;
+        return words.size();
     }
 
     @Override

@@ -72,10 +72,11 @@ public class Monitor {
      *
      * Update word occurrence in the map
      */
-    public synchronized int updateOccurrence(String word, String threadName) throws InterruptedException {
-        int result = occurrences.addOccurrence(word);
-        System.out.println(threadName + ": The " + n_occurrences+ " most frequent words actually are " + getOccurrences(n_occurrences));
-        return result;
+    public synchronized void updateOccurrence(Map<String,Integer> words, String threadName){
+        for (Map.Entry<String, Integer> word : words.entrySet()) {
+            occurrences.addOccurrence(word.getKey(),word.getValue());
+        }
+        System.out.println(threadName + ": Update global Map");
     }
 
     /**
