@@ -88,11 +88,11 @@ public class Worker extends Thread {
     }
 
     public void addOccurrences(String word) {
-        if(occurrences.containsKey(word)){
-            int value = occurrences.get(word);
-            occurrences.put(word, value + 1);
+        if(occurrences.containsKey(word.toLowerCase())){
+            int value = occurrences.get(word.toLowerCase());
+            occurrences.put(word.toLowerCase(), value + 1);
         } else {
-            occurrences.put(word, DEFAULT_WORD_COUNT);
+            occurrences.put(word.toLowerCase(), DEFAULT_WORD_COUNT);
             numberOfRecordProcessed++;
         }
     }
