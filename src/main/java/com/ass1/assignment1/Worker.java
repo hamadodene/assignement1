@@ -71,7 +71,10 @@ public class Worker extends Thread {
             List<String> exclusion = monitor.wordsToExclude();
 
             for (String word : words) {
-                System.out.println("Processing word " + word);
+                if(monitor.getStop()) {
+                    throw new ForcedStopException("Request stop: force Stop thread " + this.getName());
+                }
+               // System.out.println("Processing word " + word);
                 if(!exclusion.contains(word.toLowerCase())) {
                     //update occurrence
                     addOccurrences(word);
@@ -82,8 +85,8 @@ public class Worker extends Thread {
                 }
             }
             document.close();
-        } catch (IOException ex) {
-            System.out.println(this.getName() + ": Something went wrong, please check " + ex.getMessage());
+        } catch (IOException | ForcedStopException ex) {
+            System.out.println(this.getName() + ": " + ex.getMessage());
         }
     }
 
