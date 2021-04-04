@@ -23,7 +23,7 @@ public class Worker extends Thread {
     private int numberOfRecordProcessed = 0;
     private Map<String,Integer> occurrences;
     private final int DEFAULT_WORD_COUNT = 1;
-
+    private int totalOccurrences = 0;
     public Worker(final String name, Monitor monitor) {
         super(name);
         this.monitor = monitor;
@@ -43,6 +43,7 @@ public class Worker extends Thread {
                     long _stop = System.currentTimeMillis();
                     long t = _stop - _start;
                     System.out.println(this.getName() + ": Processed pdf " + file.getName() + " in " + t + " ms");
+                    System.out.println(this.getName() + ": Processed actually " + totalOccurrences + " words ");
                 }
             } catch (InterruptedException ex) {
                 System.out.println(this.getName() + ": Something went wrong: " + ex.getMessage());
@@ -50,7 +51,7 @@ public class Worker extends Thread {
         }
         if(!occurrences.isEmpty()) {
             //Update global Map
-            monitor.updateOccurrence(occurrences, this.getName());
+            monitor.updateOccurrence(occurrences, this.getName(), totalOccurrences);
         }
         System.out.println(this.getName() +": " + "Nothing to do, i go sleep");
     }
@@ -73,7 +74,6 @@ public class Worker extends Thread {
             for (String word : words) {
                 if(!exclusion.contains(word.toLowerCase())) {
                     addOccurrences(word);
-                    System.out.println(this.getName() + ": Processed actually " + numberOfRecordProcessed + " words " + "occurrences " +occurrences.size());
                 } else {
                     System.out.println(this.getName() +": " + "Exclude word " + word);
                 }
@@ -88,9 +88,10 @@ public class Worker extends Thread {
         if(occurrences.containsKey(word.toLowerCase())){
             int value = occurrences.get(word.toLowerCase());
             occurrences.put(word.toLowerCase(), value + 1);
+            totalOccurrences++;
         } else {
             occurrences.put(word.toLowerCase(), DEFAULT_WORD_COUNT);
-            numberOfRecordProcessed++;
+            totalOccurrences++;
         }
     }
 }

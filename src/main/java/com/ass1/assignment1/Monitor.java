@@ -24,6 +24,7 @@ public class Monitor {
     private final String file;
     private static int THREADS;
     private int n_occurrences;
+    private int totalOccurrences = 0;
 
     public Monitor(OccurrencesImpl occurrences, String path, String file) {
         this.occurrences = occurrences;
@@ -72,10 +73,11 @@ public class Monitor {
      *
      * Update word occurrence in the map
      */
-    public synchronized void updateOccurrence(Map<String,Integer> words, String threadName){
+    public synchronized void updateOccurrence(Map<String,Integer> words, String threadName, int totalOccurrences){
         for (Map.Entry<String, Integer> word : words.entrySet()) {
             occurrences.addOccurrence(word.getKey(),word.getValue());
         }
+        setTotalOccurrences(totalOccurrences);
         System.out.println(threadName + ": Update global Map");
     }
 
@@ -148,7 +150,15 @@ public class Monitor {
     public int getTotalOfWordsProcessed() {
         return occurrences.getNumberWordsProcessed();
     }
+    public void setTotalOccurrences(int n) {
+        totalOccurrences = totalOccurrences + n;
+    }
+
     public void setN_occurrences(int n_occurrences) {
         this.n_occurrences = n_occurrences;
+    }
+
+    public int getTotalOccurrences() {
+        return this.totalOccurrences;
     }
 }

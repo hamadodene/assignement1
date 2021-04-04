@@ -140,6 +140,6 @@ public class Main {
          *  Print final results
          */
         LOG.log(Level.INFO, "result is: {0}", monitor.getOccurrences(n));
-        LOG.log(Level.INFO, "The total number of words processed are: " + monitor.getTotalOfWordsProcessed());
+        LOG.log(Level.INFO, "The total number of words processed are: " + monitor.getTotalOccurrences());
     }
 }
