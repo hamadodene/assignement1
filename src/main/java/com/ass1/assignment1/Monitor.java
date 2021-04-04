@@ -21,7 +21,7 @@ public class Monitor {
     private boolean forceStop;
     private static  int THREADS;
     private int n_occurrences;
-    private int totalOccurrences;
+    private int totalOccurrences = 0;
     private boolean debug = false;
 
     public Monitor(OccurrencesImpl occurrences) {

@@ -45,6 +45,7 @@ public class Worker extends Thread {
                     System.out.println(this.getName() + ":Processed pdf  " + file.getName() + " in " + t + " ms");
                     if(monitor.debug()) {
                         System.out.println(this.getName() + ": The " + monitor.getN_occurrences() + " most frequent words actually for me are: " + getOccurrences(monitor.getN_occurrences()));
+                        System.out.println(this.getName() + ": Processed actually " + totalOccurrences + " words");
                     }
                 }
             } catch (InterruptedException | ForcedStopException ex) {
@@ -86,9 +87,6 @@ public class Worker extends Thread {
                 if(!exclusion.contains(word.toLowerCase())) {
                     //update occurrence
                     addOccurrences(word);
-                    if(monitor.debug()) {
-                        System.out.println(this.getName() + ": Processed actually " + totalOccurrences + " words");
-                    }
                 } else {
                     System.out.println("Exclude word " + word.toLowerCase());
                 }
