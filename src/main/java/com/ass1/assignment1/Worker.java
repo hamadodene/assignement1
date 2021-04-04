@@ -17,7 +17,10 @@ public class Worker extends Thread {
 
     private PDDocument document;
     private final Monitor monitor;
-    private int numberOfRecordProcessed = 0;
+    //number of words processed without considering occurrences
+    private int numberOfWordsProcessed = 0;
+    //number of words processed considering occurrences
+    private int totalOccurrences = 0;
     private Map<String,Integer> occurrences;
     private final int DEFAULT_WORD_COUNT = 1;
 
@@ -40,6 +43,9 @@ public class Worker extends Thread {
                     long _stop = System.currentTimeMillis();
                     long t = _stop - _start;
                     System.out.println(this.getName() + ":Processed pdf  " + file.getName() + " in " + t + " ms");
+                    if(monitor.debug()) {
+                        System.out.println(this.getName() + ": The " + monitor.getN_occurrences() + " most frequent words actually for me are: " + getOccurrences(monitor.getN_occurrences()));
+                    }
                 }
             } catch (InterruptedException | ForcedStopException ex) {
                 System.out.println(this.getName() + ": Something went wrong: " + ex.getMessage());
@@ -48,7 +54,7 @@ public class Worker extends Thread {
         if(!occurrences.isEmpty()) {
             //Update global Map
             try {
-                monitor.updateGlobalOccurrences(occurrences, this.getName());
+                monitor.updateGlobalOccurrences(occurrences, this.getName(), totalOccurrences);
             } catch (ForcedStopException | InterruptedException ex) {
                 System.out.println(this.getName() + ": Something went wrong " + ex);
             }
@@ -72,14 +78,17 @@ public class Worker extends Thread {
 
             for (String word : words) {
                 if(monitor.getStop()) {
+                    //Close PDF Document
+                    document.close();
                     throw new ForcedStopException("Request stop: force Stop thread " + this.getName());
                 }
                // System.out.println("Processing word " + word);
                 if(!exclusion.contains(word.toLowerCase())) {
                     //update occurrence
                     addOccurrences(word);
-                    System.out.println(this.getName() + ": Processed actually " + numberOfRecordProcessed + " words");
-                    System.out.println(this.getName() + ": The " + monitor.getN_occurrences() + " most frequent words actually for me are: " + getOccurrences(monitor.getN_occurrences()));
+                    if(monitor.debug()) {
+                        System.out.println(this.getName() + ": Processed actually " + totalOccurrences + " words");
+                    }
                 } else {
                     System.out.println("Exclude word " + word.toLowerCase());
                 }
@@ -94,9 +103,10 @@ public class Worker extends Thread {
         if(occurrences.containsKey(word.toLowerCase())){
             int value = occurrences.get(word.toLowerCase());
             occurrences.put(word.toLowerCase(), value + 1);
+            totalOccurrences++;
         } else {
             occurrences.put(word.toLowerCase(), DEFAULT_WORD_COUNT);
-            numberOfRecordProcessed++;
+            totalOccurrences++;
         }
     }
 

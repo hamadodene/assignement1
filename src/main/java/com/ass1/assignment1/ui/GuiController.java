@@ -18,6 +18,7 @@ public class GuiController {
     private OccurrencesImpl occurrences;
     private Monitor monitor;
     private List<Worker> workers;
+    private boolean debug;
 
     public GuiController() {
 
@@ -35,6 +36,7 @@ public class GuiController {
         monitor = new Monitor(occurrences);
         workers = new ArrayList<Worker>();
         monitor.setN_occurrences(n_occurrences);
+        monitor.enableDebug(this.debug);
         monitor.init();
     }
 
@@ -106,5 +108,12 @@ public class GuiController {
 
     public  String printResult() {
         return monitor.getOccurrences().toString();
+    }
+
+    public int totalOccurrences() {
+        return monitor.getTotalOccurrences();
+    }
+    public void setDebug(boolean debug){
+        this.debug = debug;
     }
 }

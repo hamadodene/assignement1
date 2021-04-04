@@ -75,11 +75,7 @@ public class StartListener implements ActionListener {
             //Send work
             controller.begin();
             result.setText(controller.printResult());
+            System.out.println("Processed " + controller.totalOccurrences() + " words");
         }).start();
     }
-
-    private static void validatePath() {
-
-    }
-
 }

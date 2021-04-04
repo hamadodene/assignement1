@@ -11,6 +11,7 @@ import java.io.PrintStream;
 public class ShowListener {
     private JFrame mainFrame;
     private JTextField field1,field2,field3;
+    private JCheckBox checkbox;
     private JLabel  result;
     private GuiOutPutStream output;
     private GuiController controller;
@@ -52,10 +53,15 @@ public class ShowListener {
 //        JLabel lblAddress = new JLabel("Result");
 //        lblAddress.setBounds(65, 162, 46, 14);
 //        mainFrame.getContentPane().add(lblAddress);
+        checkbox = new JCheckBox();
+        checkbox.setText("Enable debug (Note: this could slow down word processing)");
+        checkbox.setSelected(false);
+        checkbox.setBounds(65, 130,500,20);
+        mainFrame.getContentPane().add(checkbox);
 
-        result = new JLabel ("", JLabel.CENTER);
+        result = new JLabel ("", JLabel.LEFT);
         result.setSize(350,100);
-        result.setBounds(65, 130,350,100);
+        result.setBounds(20, 130,1000,100);
         mainFrame.getContentPane().add(result);
 
         JButton start = new JButton("Start");
@@ -80,6 +86,7 @@ public class ShowListener {
         
         start.addActionListener(new StartListener(field1, field2, field3,result, controller));
         stop.addActionListener(new StopListener(controller));
+        checkbox.addActionListener(new CheckBoxActionListener(checkbox,controller));
 
         mainFrame.setVisible(true);
     }

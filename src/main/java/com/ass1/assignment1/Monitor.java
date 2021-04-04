@@ -21,6 +21,8 @@ public class Monitor {
     private boolean forceStop;
     private static  int THREADS;
     private int n_occurrences;
+    private int totalOccurrences;
+    private boolean debug = false;
 
     public Monitor(OccurrencesImpl occurrences) {
         this.occurrences = occurrences;
@@ -44,7 +46,7 @@ public class Monitor {
      *
      * Update word occurrence in the map
      */
-    public synchronized void updateGlobalOccurrences(Map<String, Integer> words , String threadName) throws ForcedStopException, InterruptedException {
+    public synchronized void updateGlobalOccurrences(Map<String, Integer> words , String threadName, int totalOccurrences) throws ForcedStopException, InterruptedException {
         while (!started) {
             wait();
             if(forceStop) {
@@ -54,6 +56,7 @@ public class Monitor {
         for (Map.Entry<String, Integer> word : words.entrySet()) {
             occurrences.addOccurrence(word.getKey(),word.getValue());
         }
+        setTotalOccurrences(totalOccurrences);
         notifyAll();
     }
 
@@ -134,7 +137,6 @@ public class Monitor {
 
     /**
      *
-     * @param n
      * @return occurrences
      */
     public Map<String, Integer> getOccurrences() {
@@ -148,7 +150,23 @@ public class Monitor {
     public void setN_occurrences(int n_occurrences) {
         this.n_occurrences = n_occurrences;
     }
+
+    public void setTotalOccurrences(int n) {
+        totalOccurrences = totalOccurrences + n;
+    }
+
     public int getN_occurrences(){
         return this.n_occurrences;
     }
+    public int getTotalOccurrences() {
+        return this.totalOccurrences;
+    }
+
+    public boolean debug() {
+        return debug;
+    }
+    public void enableDebug(boolean debug){
+        this.debug = debug;
+    }
+
 }
