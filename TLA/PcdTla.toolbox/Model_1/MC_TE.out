@@ -1,0 +1,376 @@
+@!@!@STARTMSG 2262:0 @!@!@
+TLC2 Version 2.16 of 31 December 2020 (rev: cdddf55)
+@!@!@ENDMSG 2262 @!@!@
+@!@!@STARTMSG 2187:0 @!@!@
+Running breadth-first search Model-Checking with fp 74 and seed -6069319323622478380 with 6 workers on 12 cores with 603MB heap and 1354MB offheap memory [pid: 20364] (Windows 10 10.0 amd64, AdoptOpenJDK 14.0.1 x86_64, OffHeapDiskFPSet, DiskStateQueue).
+@!@!@ENDMSG 2187 @!@!@
+@!@!@STARTMSG 2220:0 @!@!@
+Starting SANY...
+@!@!@ENDMSG 2220 @!@!@
+Parsing file E:\RICCI\project1\TLA\PcdTla.toolbox\Model_1\MC.tla
+Parsing file E:\RICCI\project1\TLA\PcdTla.toolbox\Model_1\PcdTla.tla
+Parsing file C:\Users\hamad\Downloads\TLAToolbox-1.7.1-win32.win32.x86_64\toolbox\plugins\org.lamport.tlatools_1.0.0.202012311918\tla2sany\StandardModules\TLC.tla
+Parsing file C:\Users\hamad\Downloads\TLAToolbox-1.7.1-win32.win32.x86_64\toolbox\plugins\org.lamport.tlatools_1.0.0.202012311918\tla2sany\StandardModules\Integers.tla
+Parsing file C:\Users\hamad\Downloads\TLAToolbox-1.7.1-win32.win32.x86_64\toolbox\plugins\org.lamport.tlatools_1.0.0.202012311918\tla2sany\StandardModules\Sequences.tla
+Parsing file C:\Users\hamad\Downloads\TLAToolbox-1.7.1-win32.win32.x86_64\toolbox\plugins\org.lamport.tlatools_1.0.0.202012311918\tla2sany\StandardModules\Naturals.tla
+Parsing file C:\Users\hamad\Downloads\TLAToolbox-1.7.1-win32.win32.x86_64\toolbox\plugins\org.lamport.tlatools_1.0.0.202012311918\tla2sany\StandardModules\FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Integers
+Semantic processing of module PcdTla
+Semantic processing of module MC
+@!@!@STARTMSG 2219:0 @!@!@
+SANY finished.
+@!@!@ENDMSG 2219 @!@!@
+@!@!@STARTMSG 2185:0 @!@!@
+Starting... (2021-04-06 20:27:13)
+@!@!@ENDMSG 2185 @!@!@
+@!@!@STARTMSG 2189:0 @!@!@
+Computing initial states...
+@!@!@ENDMSG 2189 @!@!@
+@!@!@STARTMSG 2190:0 @!@!@
+Finished computing initial states: 1 distinct state generated at 2021-04-06 20:27:13.
+@!@!@ENDMSG 2190 @!@!@
+"pdf1"
+"pdf2"
+"pdf1"
+"pdf1"
+"pdf1"
+"pdf1"
+"pdf1"
+"pdf2"
+"pdf1"
+"pdf1"
+"pdf2"
+"pdf3"
+"pdf2"
+"pdf2"
+"pdf2"
+"pdf1"
+"pdf2"
+"pdf2"
+"pdf1"
+"pdf2"
+"pdf1"
+"pdf3"
+"pdf2"
+"pdf3"
+"pdf1"
+"pdf3"
+"pdf2"
+"pdf2"
+"pdf1"
+"pdf3"
+"pdf3"
+"pdf4"
+"pdf2"
+"pdf1"
+"pdf2"
+"pdf1"
+"pdf3"
+"pdf3"
+"pdf3"
+"pdf3"
+"pdf4"
+"pdf3"
+"pdf2"
+"pdf1"
+"pdf3"
+"pdf4"
+"pdf4"
+"pdf3"
+"pdf3"
+"pdf2"
+"pdf3"
+"pdf1"
+"pdf4"
+"pdf3"
+"pdf2"
+"pdf1"
+"pdf3"
+"pdf3"
+"pdf4"
+"pdf4"
+"pdf3"
+"pdf4"
+"pdf3"
+"pdf1"
+"pdf2"
+"pdf4"
+"pdf4"
+"pdf4"
+"pdf2"
+"pdf4"
+"pdf5"
+"pdf3"
+"pdf1"
+"pdf4"
+"pdf3"
+"pdf4"
+"pdf2"
+"pdf4"
+"pdf1"
+"pdf5"
+"pdf4"
+"pdf4"
+"pdf5"
+"pdf2"
+"pdf5"
+"pdf5"
+"pdf4"
+"pdf1"
+"pdf4"
+"pdf3"
+"pdf4"
+"pdf5"
+"pdf4"
+"pdf2"
+"pdf3"
+"pdf5"
+"pdf5"
+"pdf4"
+"pdf4"
+"pdf1"
+"pdf5"
+"pdf2"
+"pdf4"
+"pdf3"
+"pdf5"
+"pdf1"
+"pdf5"
+"pdf4"
+"pdf5"
+"pdf2"
+"pdf4"
+"pdf5"
+"pdf4"
+"pdf3"
+"pdf5"
+"pdf4"
+"pdf2"
+"pdf1"
+"pdf5"
+"pdf3"
+"pdf5"
+"pdf6"
+"pdf1"
+"pdf5"
+"pdf6"
+"pdf6"
+"pdf5"
+"pdf5"
+"pdf5"
+"pdf6"
+"pdf4"
+"pdf2"
+"pdf2"
+"pdf3"
+"pdf5"
+"pdf1"
+"pdf5"
+"pdf5"
+"pdf5"
+"pdf4"
+"pdf6"
+"pdf5"
+"pdf6"
+"pdf3"
+"pdf6"
+"pdf1"
+"pdf5"
+"pdf6"
+"pdf5"
+"pdf5"
+"pdf5"
+"pdf6"
+"pdf6"
+"pdf4"
+"pdf6"
+"pdf2"
+"pdf6"
+"pdf2"
+"pdf3"
+"pdf1"
+"pdf6"
+"pdf6"
+"pdf3"
+"pdf4"
+"pdf1"
+"pdf6"
+"pdf6"
+"pdf6"
+"pdf5"
+"pdf5"
+"pdf6"
+"pdf5"
+"pdf6"
+"pdf6"
+"pdf4"
+"pdf6"
+"pdf6"
+"pdf6"
+"pdf6"
+"pdf2"
+"pdf5"
+"pdf6"
+"pdf5"
+"pdf3"
+"pdf1"
+"pdf3"
+"pdf6"
+"pdf6"
+"pdf6"
+"pdf4"
+"pdf6"
+"pdf2"
+"pdf6"
+"pdf6"
+"pdf6"
+"pdf6"
+"pdf6"
+"pdf2"
+"pdf6"
+"pdf2"
+"pdf1"
+"pdf6"
+"pdf6"
+"pdf6"
+"pdf6"
+"pdf6"
+"pdf3"
+"pdf6"
+"none"
+"pdf2"
+"pdf1"
+"pdf6"
+"pdf6"
+"none"
+"pdf6"
+"pdf1"
+"pdf6"
+"pdf6"
+"none"
+"none"
+"pdf6"
+"pdf6"
+"none"
+"none"
+@!@!@STARTMSG 2193:0 @!@!@
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 6.7E-15
+@!@!@ENDMSG 2193 @!@!@
+@!@!@STARTMSG 2201:0 @!@!@
+The coverage statistics at 2021-04-06 20:27:13
+@!@!@ENDMSG 2201 @!@!@
+@!@!@STARTMSG 2773:0 @!@!@
+<Init line 34, col 1 to line 34, col 4 of module PcdTla>: 1:1
+@!@!@ENDMSG 2773 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 35, col 9 to line 38, col 48 of module PcdTla: 1
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2772:0 @!@!@
+<Compute line 40, col 1 to line 40, col 13 of module PcdTla>: 165:258
+@!@!@ENDMSG 2772 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 40, col 21 to line 40, col 40 of module PcdTla: 1034
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  |line 40, col 21 to line 40, col 28 of module PcdTla: 776
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 41, col 24 to line 41, col 40 of module PcdTla: 258
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 42, col 29 to line 42, col 65 of module PcdTla: 174
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 43, col 29 to line 43, col 65 of module PcdTla: 84
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 44, col 21 to line 44, col 50 of module PcdTla: 258
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2772:0 @!@!@
+<take line 46, col 1 to line 46, col 10 of module PcdTla>: 102:210
+@!@!@ENDMSG 2772 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 46, col 18 to line 46, col 34 of module PcdTla: 986
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  |line 46, col 18 to line 46, col 25 of module PcdTla: 776
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 47, col 22 to line 47, col 38 of module PcdTla: 210
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 48, col 26 to line 49, col 54 of module PcdTla: 116
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 50, col 33 to line 50, col 49 of module PcdTla: 94
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 51, col 37 to line 52, col 55 of module PcdTla: 58
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 53, col 40 to line 53, col 43 of module PcdTla: 36
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 54, col 40 to line 54, col 69 of module PcdTla: 36
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 55, col 18 to line 55, col 54 of module PcdTla: 210
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2772:0 @!@!@
+<compute line 57, col 1 to line 57, col 13 of module PcdTla>: 120:224
+@!@!@ENDMSG 2772 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 57, col 21 to line 57, col 40 of module PcdTla: 1000
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  |line 57, col 21 to line 57, col 28 of module PcdTla: 776
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 58, col 21 to line 58, col 38 of module PcdTla: 224
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 59, col 21 to line 59, col 57 of module PcdTla: 224
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 60, col 21 to line 60, col 50 of module PcdTla: 224
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2772:0 @!@!@
+<Terminating line 65, col 1 to line 65, col 11 of module PcdTla>: 0:12
+@!@!@ENDMSG 2772 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 65, col 40 to line 65, col 56 of module PcdTla: 454
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  |line 65, col 40 to line 65, col 47 of module PcdTla: 430
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 65, col 31 to line 65, col 37 of module PcdTla: 388
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 66, col 19 to line 66, col 32 of module PcdTla: 12
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2202:0 @!@!@
+End of statistics.
+@!@!@ENDMSG 2202 @!@!@
+@!@!@STARTMSG 2200:0 @!@!@
+Progress(22) at 2021-04-06 20:27:13: 705 states generated (37.367 s/min), 388 distinct states found (20.565 ds/min), 0 states left on queue.
+@!@!@ENDMSG 2200 @!@!@
+@!@!@STARTMSG 2199:0 @!@!@
+705 states generated, 388 distinct states found, 0 states left on queue.
+@!@!@ENDMSG 2199 @!@!@
+@!@!@STARTMSG 2194:0 @!@!@
+The depth of the complete state graph search is 22.
+@!@!@ENDMSG 2194 @!@!@
+@!@!@STARTMSG 2268:0 @!@!@
+The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 2 and the 95th percentile is 2).
+@!@!@ENDMSG 2268 @!@!@
+@!@!@STARTMSG 2186:0 @!@!@
+Finished in 1143ms at (2021-04-06 20:27:13)
+@!@!@ENDMSG 2186 @!@!@
